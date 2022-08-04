@@ -38,7 +38,7 @@ Year's 1999-2000
 
 ```{r}
 # Demographics Data
-setwd("C:/Users/jadam/Box/ExPPL/NHANES/Raw") # Home
+setwd(".../DataProjects/NHANES/Data") 
 Demo99 <- read.xport("DEMO.XPT")
 PA_Ind99 <- read.xport("PAQIAF.XPT")
 Cognition99 <- read.xport("CFQ.XPT")
@@ -58,7 +58,7 @@ Year's 2001-2002
 ```{r}
 # Demographics Data
 
-setwd("C:/Users/jadam/Box/ExPPL/NHANES/Raw") # Home
+setwd(".../DataProjects/NHANES/Data") 
 Demo01 <- read.xport("DEMO_B.XPT")
 PA_Ind01 <- read.xport("PAQIAF_B.XPT")
 Cognition01 <- read.xport("CFQ_B.XPT")
@@ -509,11 +509,11 @@ length(which(is.na(Master$DSST_Correct[Master$Age >= 60])))
 
 ```{r}
 # 1999-2000
-write_csv(Master99, 'C:/Users/jadam/Desktop/Data Project Portfolio/NHANES/Master99.csv', na = '-999')
+write_csv(Master99, '.../NHANES/Master99.csv', na = '-999')
 # 2001-2002
-write_csv(Master01, 'C:/Users/jadam/Desktop/Data Project Portfolio/NHANES/Master01.csv', na = '-999')
+write_csv(Master01, '.../NHANES/Master01.csv', na = '-999')
 # Combined
-write_csv(Master, 'C:/Users/jadam/Desktop/Data Project Portfolio/NHANES/Master_Nhanes.csv', na = '-999')
+write_csv(Master, '.../NHANES/Master_Nhanes.csv', na = '-999')
 ```
 
 
