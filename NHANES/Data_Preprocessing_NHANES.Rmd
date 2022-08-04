@@ -1,0 +1,602 @@
+---
+title: "NHANES 1999-2002"
+author: "John F. Adamek"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+library(knitr)
+library(arm)
+library(foreign)
+library(readr)
+library(plyr)
+library(tidyverse)
+library(haven)
+library(survey)
+
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, linewidth = 80)
+
+hook_output = knit_hooks$get('output')
+knit_hooks$set(output = function(x, options) {
+  # this hook is used only when the linewidth option is not NULL
+  if (!is.null(n <- options$linewidth)) {
+    x = knitr:::split_lines(x)
+    # any lines wider than n should be wrapped
+    if (any(nchar(x) > n)) x = strwrap(x, width = n)
+    x = paste(x, collapse = '\n')
+  }
+  hook_output(x, options)
+})
+```
+
+# Data Preprocessing 
+
+## Input Data
+
+Year's 1999-2000
+
+```{r}
+# Demographics Data
+setwd("C:/Users/jadam/Box/ExPPL/NHANES/Raw") # Home
+Demo99 <- read.xport("DEMO.XPT")
+PA_Ind99 <- read.xport("PAQIAF.XPT")
+Cognition99 <- read.xport("CFQ.XPT")
+PA99 <- read.xport("PAQ.XPT")
+PhysicalFunction99 <- read.xport("PFQ.XPT")
+SocialSupport99 <- read.xport("SSQ.XPT")
+BloodPressure99 <- read.xport("BPQ.XPT")
+Diabetes99 <- read.xport("DIQ.XPT")
+Medical99 <- read.xport("MCQ.XPT")
+Balance99 <- read.xport("BAX.XPT") 
+BodyMeasure99 <- read.xport("BMX.XPT")
+Strength99 <- read.xport("MSX.XPT")
+```
+
+Year's 2001-2002
+
+```{r}
+# Demographics Data
+
+setwd("C:/Users/jadam/Box/ExPPL/NHANES/Raw") # Home
+Demo01 <- read.xport("DEMO_B.XPT")
+PA_Ind01 <- read.xport("PAQIAF_B.XPT")
+Cognition01 <- read.xport("CFQ_B.XPT")
+PA01 <- read.xport("PAQ_B.XPT")
+PhysicalFunction01 <- read.xport("PFQ.XPT")
+SocialSupport01 <- read.xport("SSQ.XPT")
+BloodPressure01 <- read.xport("BPQ.XPT")
+Diabetes01 <- read.xport("DIQ.XPT")
+Medical01 <- read.xport("MCQ.XPT")
+Balance01 <- read.xport("BAX.XPT") 
+BodyMeasure01 <- read.xport("BMX.XPT")
+Strength01 <- read.xport("MSX.XPT")
+```
+
+
+## Clean Data
+
+Year's 1999-2000
+
+```{r}
+# Demographics
+Demo99 <- Demo99 %>% 
+  select(SEQN, RIDAGEYR, RIAGENDR, RIDRETH1, RIDRETH2, DMDEDUC, DMDEDUC2, DMDMARTL, INDHHINC, INDFMPIR, WTINT2YR, WTINT4YR, SDMVPSU, SDMVSTRA) %>% 
+  rename(Age = 'RIDAGEYR',
+         Gender = 'RIAGENDR',
+         Race = 'RIDRETH1',
+         Ethnicity = 'RIDRETH2',
+         Education1 = 'DMDEDUC',
+         Education2 = 'DMDEDUC2',
+         MaritalStatus = 'DMDMARTL',
+         AnnualIncome = 'INDHHINC',
+         PovertyIncomeRatio = 'INDFMPIR',
+         Sample2yrWT = 'WTINT2YR',
+         Sample4yrWT = 'WTINT4YR',
+         StrataWT = 'SDMVSTRA',
+         PSUWT = 'SDMVPSU') 
+
+# Digit Symbol Test
+Cognition99 <- Cognition99 %>% 
+  select(SEQN, CFDFINSH, CFDRIGHT) %>% 
+  rename(DSST_Total = 'CFDFINSH',
+         DSST_Correct = 'CFDRIGHT')
+
+# General Physical Activity
+PA99 <- PA99 %>% 
+  select(SEQN, PAD200:PAD460, PAQ500, PAQ540) %>% 
+  rename(Vig_Activity = 'PAD200',
+         Mod_Activity = 'PAD320',
+         MuscleStrength = 'PAD440',
+         MuscleStrength_num = 'PAD460',
+         PAsimilar_year = 'PAQ500',
+         PAsimilar_10y = 'PAQ540') %>% 
+  mutate(MuscleStrength01 = ifelse(MuscleStrength == 1, 1, 0),
+         Mod_Activity01 = ifelse(Mod_Activity == 1, 1, 0),
+         Vig_Activity01 = ifelse(Vig_Activity == 1, 1, 0)) 
+
+# Specific Physical Activity Type
+PA_Ind99 <- PA_Ind99 %>% 
+  rename(PA_type = 'PADACTIV',
+         Act_Level = 'PADLEVEL',
+         Freq_past30 = 'PADTIMES',
+         Avg_dur = 'PADDURAT',
+         METS = 'PADMETS',
+         PAWT = 'PAAQUEX') %>% 
+  mutate(PA_type=recode(PA_type,
+                        `10` = 'Aerobics',
+                        `11` = 'Baseball',
+                        `12` = 'Basketball',
+                        `13` = 'Bicycling',
+                        `14` = 'Bowling',
+                        `15` = 'Dance',
+                        `16` = 'Fishing',
+                        `17` = 'Football',
+                        `18` = 'Gardenening',
+                        `19` = 'Golf',
+                        `20` = 'Hiking',
+                        `21` = 'Hockey',
+                        `22` = 'Hunting',
+                        `23` = 'Jogging',
+                        `24` = 'Kayaking',
+                        `25` = 'Pushups',
+                        `26` = 'Racquetball',
+                        `27` = 'Rollerblading',
+                        `28` = 'Rowing',
+                        `29` = 'Running',
+                        `30` = 'Situps',
+                        `31` = 'Skating',
+                        `32` = 'Skiing_CC',
+                        `33` = 'Skiing_DH',
+                        `34` = 'Soccer',
+                        `35` = 'Softball',
+                        `36` = 'StairClimbing',
+                        `37` = 'Stretching',
+                        `38` = 'Swimming',
+                        `39` = 'Tennis',
+                        `40` = 'Treadmill',
+                        `41` = 'Volleyball',
+                        `42` = 'Walking',
+                        `43` = 'Weightlifting',
+                        `44` = 'YardWork',
+                        `50` = 'Boxing',
+                        `51` = 'Frisbee',
+                        `52` = 'HorsebackRiding',
+                        `53` = 'MartialArts',
+                        `54` = 'Wrestling',
+                        `55` = 'Yoga',
+                        `56` = 'Gymnastic.Cheer',
+                        `57` = 'ChildGames',
+                        `58` = 'RopeJumping',
+                        `59` = 'Skateboard',
+                        `60` = 'Surfing',
+                        `61` = 'Trampoline',
+                        `71` = 'Other'),
+         Freq_perweek = Freq_past30/4,
+         Tot_Mins = Freq_past30*Avg_dur)
+## Calculates the TOTAL UNIQUE types of PA type each people did.
+PA_Ind99_Types <- PA_Ind99 %>%
+  count(SEQN, PA_type) %>%
+  mutate(n=recode(n, `2` = 1L)) %>%
+  pivot_wider(names_from = PA_type,
+              values_from = n,
+              values_fill = 0) %>% 
+  rowwise() %>% 
+  mutate(TotalPA = sum(across(Basketball:Rowing))) %>% 
+  select(SEQN, TotalPA)
+## Calculates min/week for each activity at each mod and vig level
+PA_mod99 <- PA_Ind99 %>% 
+  filter(Act_Level == 1) %>% 
+  select(SEQN, Freq_perweek, Tot_Mins) %>% 
+  group_by(SEQN) %>% 
+  summarise_all(sum) %>% 
+  rename(DaysinModActperwk = 'Freq_perweek',
+         MininModActperwk = 'Tot_Mins')
+PA_vig99 <- PA_Ind99 %>% 
+  filter(Act_Level == 2) %>% 
+  select(SEQN, Freq_perweek, Tot_Mins) %>% 
+  group_by(SEQN) %>% 
+  summarise_all(sum) %>% 
+  rename(DaysinVigActperwk = 'Freq_perweek',
+         MininVigActperwk = 'Tot_Mins')
+PA_All99 <- PA_mod99 %>% 
+  full_join(PA_vig99, by = 'SEQN') %>% 
+  mutate_at(vars(DaysinVigActperwk:MininVigActperwk), ~replace(., is.na(.), 0)) 
+
+# Physical Function
+PhysicalFunction99 <- PhysicalFunction99 %>% 
+  rename(PhyMenEmoFunction = "PFQ059",
+         DepAnxEmoProblems = 'PFD069DG',
+         MemoryProblems = 'PFQ056',
+         Moneydiff = "PFQ060A") %>% 
+  mutate(depanxemo_Diff = ifelse(PFD067A == 14 | PFD067B == 14 | PFD067C == 14 | PFD067D == 14 | PFD067E == 14, 1, 0)) %>% 
+  select(SEQN, MemoryProblems, PhyMenEmoFunction, DepAnxEmoProblems, Moneydiff, depanxemo_Diff)
+
+# Social Support
+SocialSupport99 <- SocialSupport99 %>% 
+  rename(NeedSocialSupport = 'SSQ030',
+         MoreSSNeeded = 'SSQ040',
+         NumCloseFriends = 'SSQ060') %>% 
+  select(SEQN, NeedSocialSupport, MoreSSNeeded, NumCloseFriends)
+
+# Blood Pressure & Cholesterol
+BloodPressure99 <- BloodPressure99 %>% 
+  rename(Hypertension = 'BPQ020',
+         HighChol = 'BPQ080',
+         PresHyperTen = "BPQ040A") %>% 
+  select(SEQN, Hypertension, HighChol, PresHyperTen)
+
+# Diabetes
+Diabetes99 <- Diabetes99 %>% 
+  rename(Diabetes = "DIQ010") %>% 
+  select(SEQN, Diabetes)
+
+# Medical
+Medical99 <- Medical99 %>% 
+  rename(Stroke = 'MCQ160F',
+         Heartattack = 'MCQ160E',
+         CongHrtFail = 'MCQ160B',
+         CoronHrtDisease = 'MCQ160C',
+         Cancer = "MCQ220") %>% 
+  select(SEQN, Stroke, Heartattack, CongHrtFail, CoronHrtDisease, Cancer)
+
+# Balance
+Balance99 <- Balance99 %>% 
+  filter(BAQ110 == 1) %>% #Filtered people who could not stand on their own
+  select(SEQN, BAQ110, BAXPFC21, BAXFTC21, BAXPFC41, BAXFTC41) %>% 
+  rename(StandonOwn = 'BAQ110',
+         STD_EC = 'BAXPFC21',
+         STD_ECs = 'BAXFTC21',
+         STD_ECF = 'BAXPFC41',
+         STD_ECF_s = 'BAXFTC41')
+
+# Body Measures
+BodyMeasure99 <- BodyMeasure99 %>% 
+  rename(BMI = 'BMXBMI') %>% 
+  select(SEQN, BMI)
+
+# Strength
+Strength99 <- Strength99 %>% 
+  select(SEQN, MSXWTIME, MSDPF, MSDAPF) %>% 
+  rename(Walk20ft = 'MSXWTIME',
+         Peakforce = 'MSDPF',
+         Peakforce_avg = 'MSDAPF')
+```
+
+Years 2001-2002
+
+```{r}
+# Demographics
+Demo01 <- Demo01 %>% 
+  select(SEQN, RIDAGEYR, RIAGENDR, RIDRETH1, RIDRETH2, DMDEDUC, DMDEDUC2, DMDMARTL, INDHHINC, INDFMPIR, WTINT2YR, WTINT4YR, SDMVPSU, SDMVSTRA) %>% 
+  rename(Age = 'RIDAGEYR',
+         Gender = 'RIAGENDR',
+         Race = 'RIDRETH1',
+         Ethnicity = 'RIDRETH2',
+         Education1 = 'DMDEDUC',
+         Education2 = 'DMDEDUC2',
+         MaritalStatus = 'DMDMARTL',
+         AnnualIncome = 'INDHHINC',
+         PovertyIncomeRatio = 'INDFMPIR',
+         Sample2yrWT = 'WTINT2YR',
+         Sample4yrWT = 'WTINT4YR',
+         StrataWT = 'SDMVSTRA',
+         PSUWT = 'SDMVPSU') 
+# Digit Symbol
+Cognition01 <- Cognition01 %>% 
+  select(SEQN, CFDFINSH, CFDRIGHT) %>% 
+  rename(DSST_Total = 'CFDFINSH',
+         DSST_Correct = 'CFDRIGHT')
+# General Physical Activity
+PA01 <- PA01 %>% 
+  select(SEQN, PAD200:PAD460, PAQ500, PAQ540) %>% 
+  rename(Vig_Activity = 'PAD200',
+         Mod_Activity = 'PAD320',
+         MuscleStrength = 'PAD440',
+         MuscleStrength_num = 'PAD460',
+         PAsimilar_year = 'PAQ500',
+         PAsimilar_10y = 'PAQ540') %>% 
+  mutate(MuscleStrength01 = ifelse(MuscleStrength == 1, 1, 0),
+         Mod_Activity01 = ifelse(Mod_Activity == 1, 1, 0),
+         Vig_Activity01 = ifelse(Vig_Activity == 1, 1, 0)) 
+# Specific Physical Activity Type
+PA_Ind01 <- PA_Ind01 %>% 
+  rename(PA_type = 'PADACTIV',
+         Act_Level = 'PADLEVEL',
+         Freq_past30 = 'PADTIMES',
+         Avg_dur = 'PADDURAT',
+         METS = 'PADMETS',
+         PAWT = 'PAAQUEX') %>% 
+  mutate(PA_type=recode(PA_type,
+                        `10` = 'Aerobics',
+                        `11` = 'Baseball',
+                        `12` = 'Basketball',
+                        `13` = 'Bicycling',
+                        `14` = 'Bowling',
+                        `15` = 'Dance',
+                        `16` = 'Fishing',
+                        `17` = 'Football',
+                        `18` = 'Gardenening',
+                        `19` = 'Golf',
+                        `20` = 'Hiking',
+                        `21` = 'Hockey',
+                        `22` = 'Hunting',
+                        `23` = 'Jogging',
+                        `24` = 'Kayaking',
+                        `25` = 'Pushups',
+                        `26` = 'Racquetball',
+                        `27` = 'Rollerblading',
+                        `28` = 'Rowing',
+                        `29` = 'Running',
+                        `30` = 'Situps',
+                        `31` = 'Skating',
+                        `32` = 'Skiing_CC',
+                        `33` = 'Skiing_DH',
+                        `34` = 'Soccer',
+                        `35` = 'Softball',
+                        `36` = 'StairClimbing',
+                        `37` = 'Stretching',
+                        `38` = 'Swimming',
+                        `39` = 'Tennis',
+                        `40` = 'Treadmill',
+                        `41` = 'Volleyball',
+                        `42` = 'Walking',
+                        `43` = 'Weightlifting',
+                        `44` = 'YardWork',
+                        `50` = 'Boxing',
+                        `51` = 'Frisbee',
+                        `52` = 'HorsebackRiding',
+                        `53` = 'MartialArts',
+                        `54` = 'Wrestling',
+                        `55` = 'Yoga',
+                        `56` = 'Gymnastic.Cheer',
+                        `57` = 'ChildGames',
+                        `58` = 'RopeJumping',
+                        `59` = 'Skateboard',
+                        `60` = 'Surfing',
+                        `61` = 'Trampoline',
+                        `71` = 'Other'),
+         Freq_perweek = Freq_past30/4,
+         Tot_Mins = Freq_past30*Avg_dur)
+## Calculates the TOTAL UNIQUE types of PA type each people did.
+PA_Ind01_Types <- PA_Ind01 %>% 
+  count(SEQN, PA_type) %>% 
+  mutate(n=recode(n, `2` = 1L)) %>%
+  pivot_wider(names_from = PA_type,
+              values_from = n,
+              values_fill = 0) %>% 
+  rowwise() %>% 
+  mutate(TotalPA = sum(across(Baseball:Surfing))) %>% 
+  select(SEQN, TotalPA)
+## Calculates min/week for each activity at each mod and vig level
+PA_mod01 <- PA_Ind01 %>% 
+  filter(Act_Level == 1) %>% 
+  select(SEQN, Freq_perweek, Tot_Mins) %>% 
+  group_by(SEQN) %>% 
+  summarise_all(sum) %>% 
+  rename(DaysinModActperwk = 'Freq_perweek',
+         MininModActperwk = 'Tot_Mins')
+PA_vig01 <- PA_Ind01 %>% 
+  filter(Act_Level == 2) %>% 
+  select(SEQN, Freq_perweek, Tot_Mins) %>% 
+  group_by(SEQN) %>% 
+  summarise_all(sum) %>% 
+  rename(DaysinVigActperwk = 'Freq_perweek',
+         MininVigActperwk = 'Tot_Mins')
+PA_All01 <- PA_mod01 %>% 
+  full_join(PA_vig01, by = 'SEQN') %>% 
+  mutate_at(vars(DaysinVigActperwk:MininVigActperwk), ~replace(., is.na(.), 0)) 
+
+# Physical Function
+PhysicalFunction01 <- PhysicalFunction01 %>% 
+  rename(PhyMenEmoFunction = "PFQ059",
+         DepAnxEmoProblems = 'PFD069DG',
+         MemoryProblems = 'PFQ056',
+         Moneydiff = "PFQ060A") %>% 
+  mutate(depanxemo_Diff = ifelse(PFD067A == 14 | PFD067B == 14 | PFD067C == 14 | PFD067D == 14 | PFD067E == 14, 1, 0)) %>% 
+  select(SEQN, MemoryProblems, PhyMenEmoFunction, DepAnxEmoProblems, Moneydiff, depanxemo_Diff)
+
+# Social Support
+SocialSupport01 <- SocialSupport01 %>% 
+  rename(NeedSocialSupport = 'SSQ030',
+         MoreSSNeeded = 'SSQ040',
+         NumCloseFriends = 'SSQ060') %>% 
+  select(SEQN, NeedSocialSupport, MoreSSNeeded, NumCloseFriends)
+
+# Blood Pressure & Cholesterol
+BloodPressure01 <- BloodPressure01 %>% 
+  rename(Hypertension = 'BPQ020',
+         HighChol = 'BPQ080',
+         PresHyperTen = "BPQ040A") %>% 
+  select(SEQN, Hypertension, HighChol, PresHyperTen)
+
+# Diabetes
+Diabetes01 <- Diabetes01 %>% 
+  rename(Diabetes = "DIQ010") %>% 
+  select(SEQN, Diabetes)
+
+# Medical
+Medical01 <- Medical01 %>% 
+  rename(Stroke = 'MCQ160F',
+         Heartattack = 'MCQ160E',
+         CongHrtFail = 'MCQ160B',
+         CoronHrtDisease = 'MCQ160C',
+         Cancer = "MCQ220") %>% 
+  select(SEQN, Stroke, Heartattack, CongHrtFail, CoronHrtDisease, Cancer)
+
+# Balance
+Balance01 <- Balance01 %>% 
+  filter(BAQ110 == 1) %>% #Filtered people who could not stand on their own
+  select(SEQN, BAQ110, BAXPFC21, BAXFTC21, BAXPFC41, BAXFTC41) %>% 
+  rename(StandonOwn = 'BAQ110',
+         STD_EC = 'BAXPFC21',
+         STD_ECs = 'BAXFTC21',
+         STD_ECF = 'BAXPFC41',
+         STD_ECF_s = 'BAXFTC41')
+
+# Body Measures
+BodyMeasure01 <- BodyMeasure01 %>% 
+  rename(BMI = 'BMXBMI') %>% 
+  select(SEQN, BMI)
+
+# Strength
+Strength01 <- Strength01 %>% 
+  select(SEQN, MSXWTIME, MSDPF, MSDAPF) %>% 
+  rename(Walk20ft = 'MSXWTIME',
+         Peakforce = 'MSDPF',
+         Peakforce_avg = 'MSDAPF')
+```
+
+
+## Merge Datasets
+
+Final 1999-2000 Dataset
+
+```{r}
+Master99 <- Demo99 %>%
+  left_join(PA_Ind99_Types, by = 'SEQN') %>%
+  left_join(Cognition99, by = 'SEQN') %>%
+  left_join(PA99, by = 'SEQN') %>% 
+  left_join(PA_All99, by = 'SEQN') %>% 
+  left_join(PhysicalFunction99, by = 'SEQN') %>%
+  left_join(SocialSupport99, by = 'SEQN') %>%
+  left_join(BloodPressure99, by = 'SEQN') %>% 
+  left_join(Diabetes99, by = 'SEQN') %>% 
+  left_join(Medical99, by = 'SEQN') %>%
+  left_join(Balance99, by = 'SEQN') %>%
+  left_join(BodyMeasure99, by = 'SEQN') %>% 
+  left_join(Strength99, by = 'SEQN')
+```
+
+Final 2001-2002 Dataset
+
+```{r}
+Master01 <- Demo01 %>%
+  left_join(PA_Ind01_Types, by = 'SEQN') %>%
+  left_join(Cognition01, by = 'SEQN') %>%
+  left_join(PA01, by = 'SEQN') %>% 
+  left_join(PA_All01, by = 'SEQN') %>% 
+  left_join(PhysicalFunction01, by = 'SEQN') %>%
+  left_join(SocialSupport01, by = 'SEQN') %>%
+  left_join(BloodPressure01, by = 'SEQN') %>% 
+  left_join(Diabetes01, by = 'SEQN') %>% 
+  left_join(Medical01, by = 'SEQN') %>%
+  left_join(Balance01, by = 'SEQN') %>%
+  left_join(BodyMeasure01, by = 'SEQN') %>% 
+  left_join(Strength01, by = 'SEQN')
+
+
+
+```
+
+Final Combined Dataset
+
+```{r}
+Master <- rbind(Master01, Master99)
+```
+
+Explore Data
+
+```{r}
+# Whats my N sample?
+length(unique(Master$SEQN))
+# Missing data for Cognitive tests (DSST only administered to those 60years of age or older)
+length(which(is.na(Master$DSST_Correct[Master$Age >= 60])))
+
+```
+
+# Save Dataset
+
+```{r}
+# 1999-2000
+write_csv(Master99, 'C:/Users/jadam/Desktop/Data Project Portfolio/NHANES/Master99.csv', na = '-999')
+# 2001-2002
+write_csv(Master01, 'C:/Users/jadam/Desktop/Data Project Portfolio/NHANES/Master01.csv', na = '-999')
+# Combined
+write_csv(Master, 'C:/Users/jadam/Desktop/Data Project Portfolio/NHANES/Master_Nhanes.csv', na = '-999')
+```
+
+
+# Data Analysis
+
+## Change Variables to a factor
+
+```{r}
+# Recode Gender
+Master <- Master %>%
+  mutate(Gender = recode(Gender, `1` = 0L, `2` = 1L))
+Master$Gender <- as.factor(Master$Gender)
+
+# Recode Race
+Master$Race <- as.factor(Master$Race)
+
+# Recode Education
+Master$Education1 <- as.factor(Master$Education1)
+Master$Education2 <- as.factor(Master$Education2)
+# Pasimilar
+Master <- Master %>% 
+  mutate(PAsimilar_10y = recode(PAsimilar_10y, `1` = 1L, `2` = 2L, `3` = 3L))
+Master$PAsimilar_10y <- as.factor(Master$PAsimilar_10y)
+```
+
+
+## Apply Weights
+
+```{r}
+# 12.3.4 Add weight
+nhanesDesign <- svydesign(id      = ~PSUWT,
+                          strata  = ~StrataWT,
+                          weights = ~Sample4yrWT,
+                          nest    = TRUE,
+                          data    = Master)
+
+```
+
+## Filter/Subset Data
+
+```{r}
+MasterCDesign <- subset(nhanesDesign, Age >= 60 &
+                                Mod_Activity != 7 & 
+                                Vig_Activity != 7 &
+                                !is.na(DSST_Correct))
+
+```
+
+# Statistics
+
+## Descriptives
+
+```{r}
+# Descriptive
+svymean(~DSST_Correct, MasterCDesign, na.rm = TRUE)
+svymean(~TotalPA, MasterCDesign, na.rm = TRUE)
+svymean(~DSST_Correct, MasterCDesign, na.rm = TRUE)
+svymean(~TotalPA, MasterCDesign, na.rm = TRUE)
+svymean(~Age, MasterCDesign, na.rm = TRUE)
+```
+
+
+## GLM: DSST ~ Total PA + COV
+
+```{r}
+## General Linear Model - ENTIRE SAMPLE
+model1 <- svyglm(DSST_Correct ~ TotalPA + Age + Gender + Race + Education2,
+                 design = MasterCDesign)
+# F statistics for just TotalPA !!!
+summary(model1)
+anova(model1)
+regTermTest(model1, ~ TotalPA)
+display(model1)
+
+## General Linear Model - ENTIRE SAMPLE
+model1 <- svyglm(DSST_Correct ~ TotalPA + Age + Gender + Race + Education2 + PAsimilar_10y,
+                 design = MasterCDesign)
+# F statistics for just TotalPA !!!
+summary(model1)
+anova(model1)
+regTermTest(model1, ~ TotalPA)
+display(model1)
+
+```
+
+
