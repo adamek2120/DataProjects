@@ -1,0 +1,100 @@
+VERSION 1.1.0
+INPUT
+TITLE:
+
+ Enter Title Here;
+
+DATA:
+  FILE IS outputData.csv;
+VARIABLE:
+ NAMES ARE ID,age,gender,highedu,Verbalm0,BMI0M,ACI1_RC,ACI1IMP,ACI1,
+ACI2,ACI3,ACI4,ACI5,ACI6,ACIc_RC,ACIc_IMP;
+ MISSING ARE ALL (-999);
+ USEVAR ARE ACI1IMP
+                ACI2
+                ACI3
+                ACI4
+                ACI5
+                ACI6;
+ANALYSIS:
+ ESTIMATOR=MLR;
+OUTPUT:
+ sampstat standardized modindices;
+MODEL:
+    ACI BY  ACI1IMP
+                ACI2
+                ACI3
+                ACI4
+                ACI5
+                ACI6;
+INPUT_END
+2
+2
+2
+2
+MLR
+1
+GENERAL
+0
+6
+1
+0
+aci1imp aci2 aci3 aci4 aci5 aci6 aci
+1
+-1 -1 -1 -1 -1 -1 0
+0
+1
+aci
+aci1imp aci2 aci3 aci4 aci5 aci6
+1 1 aci aci1imp    1.000    0.000
+1 1 aci aci2    1.223    0.297
+1 1 aci aci3    1.664    0.327
+1 1 aci aci4    1.274    0.313
+1 1 aci aci5    1.086    0.307
+1 1 aci aci6    1.184    0.324
+4 1 aci1imp    0.906    0.122
+4 1 aci2    0.919    0.132
+4 1 aci3    0.608    0.128
+4 1 aci4    1.199    0.170
+4 1 aci5    0.900    0.143
+4 1 aci6    1.242    0.187
+5 1 aci    0.360    0.153
+11 1 aci aci1imp    0.533    0.087
+11 1 aci aci2    0.607    0.072
+11 1 aci aci3    0.788    0.055
+11 1 aci aci4    0.572    0.072
+11 1 aci aci5    0.566    0.090
+11 1 aci aci6    0.537    0.090
+14 1 aci1imp    0.716    0.093
+14 1 aci2    0.631    0.088
+14 1 aci3    0.379    0.086
+14 1 aci4    0.673    0.082
+14 1 aci5    0.680    0.102
+14 1 aci6    0.711    0.097
+15 1 aci    1.000    0.000
+21 1 aci aci1imp    0.533    0.087
+21 1 aci aci2    0.607    0.072
+21 1 aci aci3    0.788    0.055
+21 1 aci aci4    0.572    0.072
+21 1 aci aci5    0.566    0.090
+21 1 aci aci6    0.537    0.090
+24 1 aci1imp    0.716    0.093
+24 1 aci2    0.631    0.088
+24 1 aci3    0.379    0.086
+24 1 aci4    0.673    0.082
+24 1 aci5    0.680    0.102
+24 1 aci6    0.711    0.097
+25 1 aci    1.000    0.000
+31 1 aci aci1imp    0.600    0.128
+31 1 aci aci2    0.733    0.102
+31 1 aci aci3    0.998    0.104
+31 1 aci aci4    0.764    0.108
+31 1 aci aci5    0.651    0.118
+31 1 aci aci6    0.710    0.128
+34 1 aci1imp    0.906    0.122
+34 1 aci2    0.919    0.132
+34 1 aci3    0.608    0.128
+34 1 aci4    1.199    0.170
+34 1 aci5    0.900    0.143
+34 1 aci6    1.242    0.187
+35 1 aci    1.000    0.000

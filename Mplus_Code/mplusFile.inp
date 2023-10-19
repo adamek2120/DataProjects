@@ -1,0 +1,36 @@
+TITLE:
+	Enter Title Here;
+
+DATA:
+ 	FILE IS outputData.csv;
+
+VARIABLE:
+!NOTE: LOOK FOR BAD CHARACTERS IN THE FIRST VARIABLE.
+	NAMES ARE ID,age,gender,highedu,Verbalm0,BMI0M,ACI1_RC,ACI1IMP,ACI1,
+ACI2,ACI3,ACI4,ACI5,ACI6,ACIc_RC,ACIc_IMP;
+
+	MISSING ARE ALL (-999);
+
+	!INCLUDE USED VARIABLES HERE
+	USEVAR ARE ACI1IMP
+                ACI2
+                ACI3
+                ACI4
+                ACI5
+                ACI6; 
+
+MODEL:
+
+    ACI BY  ACI1IMP
+                ACI2
+                ACI3
+                ACI4
+                ACI5
+                ACI6; 
+
+
+ANALYSIS:
+	ESTIMATOR=MLR;
+
+OUTPUT:
+	sampstat standardized modindices;
