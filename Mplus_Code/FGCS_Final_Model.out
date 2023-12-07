@@ -1,0 +1,1755 @@
+Mplus VERSION 8
+MUTHEN & MUTHEN
+02/02/2021   5:14 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE:
+      National Longitudinal Study of Adolescent to Adult Health
+      (Add Health), 1994-2008 [Public Use] DS8: Wave III: In-Home Questionnaire;
+
+      DATA:
+       	FILE IS fgcs_020221.csv;
+
+      DEFINE:
+
+  cesdCom = (cesd1+cesd2+cesd4+cesd5+cesd7+sad+cesd9)/7;
+
+      VARIABLE:
+      	NAMES ARE
+      	ID sex age white black amindi asian	hispanic college	
+      	fgcs bmi satwlife cesd1 cesd2 cesd3 cesd4 cesd5 cesd6 cesd7	
+      	sad cesd9 goodqual proud likeself doinrght	independ person	
+      	leader lifesch confid houswork hobby video videohrs comgamhr	
+      	tv tvhrs golffish hfriends typPA morlsact laborhrs	
+      	STcar STbus STsub walk2sch STbike STother SCmiles SCwalkhr SCstndhr	
+      	SCseathr bikedanc skateski strenspo indsport	
+      	gymnlift walk4ex cesd	depresdx datawgt exfitctr	
+      	lmvigact lmmodact lmlift lmclimbs lmclimb1	lmbend	
+      	mobility lmwalk lmwalkbl workyr workful sucideyn sucidex	
+      	conscien voluntr typicpa mlactive curjobYN	income	gehealth
+      	wherlive liveswit nomosins	menthos	 relax	supportg	
+      	race pdisab everjob jobsat mentor uscitzen intelli
+      	psych drugprog counsel;
+
+      	MISSING ARE ALL (-999);
+
+    USEVAR ARE
+        FGCS
+        intelli
+        age
+        sex
+        black
+        hispanic !ethnicity
+        workful
+        BMI
+        mobility !lmwalkmo !limited in ability to walk
+        hfriends
+        walk4ex
+        walk2sch
+        exfitctr	
+        !gehealth
+        psych
+        satwlife !Do you feel satisfied with your life (as a whole)
+        cesdCom !The composite created above
+        ;
+
+      ANALYSIS:
+      PROCESS=12;
+      ESTIMATOR = MLR;
+
+      MODEL:
+
+
+        cesdCom ON                       hfriends
+                                         psych
+                                         exfitctr	
+                                         walk4ex
+                                         walk2sch
+                                         FGCS
+                                         intelli
+                                         age
+                                         sex
+                                         black
+                                         hispanic	
+                                         workful
+                                         BMI
+                                         mobility
+                                         !gehealth
+                                          ;
+
+
+        satwlife ON                      hfriends
+                                         psych
+                                         exfitctr	
+                                         walk4ex
+                                         walk2sch
+                                         FGCS
+                                         intelli
+                                         age
+                                         sex
+                                         black
+                                         hispanic	
+                                         workful
+                                         BMI
+                                         mobility
+                                         !gehealth
+                                          ;
+
+       satwlife ON cesdCom;
+
+       exfitctr walk4ex walk2sch psych ON hfriends
+                                          FGCS
+                                          intelli
+                                          age
+                                          sex
+                                          black
+                                          hispanic
+                                          workful
+                                          BMI
+                                          mobility
+                                          !gehealth
+                                         ;
+
+     hfriends ON
+                                          FGCS
+                                          intelli
+                                          age
+                                          sex
+                                          black
+                                          hispanic
+                                          workful
+                                          BMI
+                                          mobility
+                                          !gehealth
+                                          ;
+       exfitctr WITH walk4ex;
+       walk4ex WITH walk2sch;
+
+       EXFITCTR WITH WALK2SCH@0;
+
+       Model indirect:
+
+       satwlife IND FGCS ;
+       hfriends IND FGCS ;
+       cesdCom IND FGCS;
+
+      OUTPUT: 	sampstat standardized modindices; !tech11 tech14 ;
+
+      PLOT: TYPE= PLOT1 PLOT2 PLOT3;
+
+
+
+*** WARNING
+  Data set contains cases with missing on x-variables.
+  These cases were not included in the analysis.
+  Number of cases with missing on x-variables:  263
+   1 WARNING(S) FOUND IN THE INPUT INSTRUCTIONS
+
+
+
+
+National Longitudinal Study of Adolescent to Adult Health
+(Add Health), 1994-2008 [Public Use] DS8: Wave III: In-Home Questionnaire;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                        1362
+
+Number of dependent variables                                    7
+Number of independent variables                                  9
+Number of continuous latent variables                            0
+
+Observed dependent variables
+
+  Continuous
+   HFRIENDS    WALK4EX     WALK2SCH    EXFITCTR    PSYCH       SATWLIFE
+   CESDCOM
+
+Observed independent variables
+   FGCS        INTELLI     AGE         SEX         BLACK       HISPANIC
+   WORKFUL     BMI         MOBILITY
+
+
+Estimator                                                      MLR
+Information matrix                                        OBSERVED
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+
+Input data file(s)
+  fgcs_020221.csv
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns             7
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              HFRIENDS      WALK4EX       WALK2SCH      EXFITCTR      PSYCH
+              ________      ________      ________      ________      ________
+ HFRIENDS       0.998
+ WALK4EX        0.998         0.999
+ WALK2SCH       0.913         0.913         0.914
+ EXFITCTR       0.998         0.999         0.914         1.000
+ PSYCH          0.997         0.998         0.913         0.999         0.999
+ SATWLIFE       0.998         0.999         0.914         1.000         0.999
+ CESDCOM        0.997         0.998         0.913         0.999         0.999
+ FGCS           0.998         0.999         0.914         1.000         0.999
+ INTELLI        0.998         0.999         0.914         1.000         0.999
+ AGE            0.998         0.999         0.914         1.000         0.999
+ SEX            0.998         0.999         0.914         1.000         0.999
+ BLACK          0.998         0.999         0.914         1.000         0.999
+ HISPANIC       0.998         0.999         0.914         1.000         0.999
+ WORKFUL        0.998         0.999         0.914         1.000         0.999
+ BMI            0.998         0.999         0.914         1.000         0.999
+ MOBILITY       0.998         0.999         0.914         1.000         0.999
+
+
+           Covariance Coverage
+              SATWLIFE      CESDCOM       FGCS          INTELLI       AGE
+              ________      ________      ________      ________      ________
+ SATWLIFE       1.000
+ CESDCOM        0.999         0.999
+ FGCS           1.000         0.999         1.000
+ INTELLI        1.000         0.999         1.000         1.000
+ AGE            1.000         0.999         1.000         1.000         1.000
+ SEX            1.000         0.999         1.000         1.000         1.000
+ BLACK          1.000         0.999         1.000         1.000         1.000
+ HISPANIC       1.000         0.999         1.000         1.000         1.000
+ WORKFUL        1.000         0.999         1.000         1.000         1.000
+ BMI            1.000         0.999         1.000         1.000         1.000
+ MOBILITY       1.000         0.999         1.000         1.000         1.000
+
+
+           Covariance Coverage
+              SEX           BLACK         HISPANIC      WORKFUL       BMI
+              ________      ________      ________      ________      ________
+ SEX            1.000
+ BLACK          1.000         1.000
+ HISPANIC       1.000         1.000         1.000
+ WORKFUL        1.000         1.000         1.000         1.000
+ BMI            1.000         1.000         1.000         1.000         1.000
+ MOBILITY       1.000         1.000         1.000         1.000         1.000
+
+
+           Covariance Coverage
+              MOBILITY
+              ________
+ MOBILITY       1.000
+
+
+SAMPLE STATISTICS
+
+
+     ESTIMATED SAMPLE STATISTICS
+
+
+           Means
+              HFRIENDS      WALK4EX       WALK2SCH      EXFITCTR      PSYCH
+              ________      ________      ________      ________      ________
+                4.894         1.511         0.241         1.433         0.090
+
+
+           Means
+              SATWLIFE      CESDCOM       FGCS          INTELLI       AGE
+              ________      ________      ________      ________      ________
+                4.286         2.574         0.332         4.193        20.974
+
+
+           Means
+              SEX           BLACK         HISPANIC      WORKFUL       BMI
+              ________      ________      ________      ________      ________
+                1.589         0.222         0.099         1.576        26.137
+
+
+           Means
+              MOBILITY
+              ________
+                2.931
+
+
+           Covariances
+              HFRIENDS      WALK4EX       WALK2SCH      EXFITCTR      PSYCH
+              ________      ________      ________      ________      ________
+ HFRIENDS       4.996
+ WALK4EX        0.180         4.437
+ WALK2SCH       0.163         0.060         0.184
+ EXFITCTR       0.382         0.597         0.048         4.160
+ PSYCH          0.018         0.031         0.010        -0.020         0.082
+ SATWLIFE       0.101         0.019         0.029         0.119        -0.042
+ CESDCOM        0.013        -0.006        -0.001         0.049        -0.031
+ FGCS          -0.068         0.062        -0.021         0.003        -0.012
+ INTELLI        0.091         0.058         0.048         0.084         0.007
+ AGE           -0.738         0.121        -0.151        -0.182        -0.018
+ SEX            0.011         0.134        -0.001        -0.171         0.019
+ BLACK          0.050        -0.011        -0.001        -0.041        -0.005
+ HISPANIC      -0.056         0.016        -0.015         0.015         0.001
+ WORKFUL        0.066        -0.019         0.033        -0.032         0.012
+ BMI           -0.005         1.662        -0.196        -0.117         0.017
+ MOBILITY       0.021        -0.002         0.007         0.012        -0.005
+
+
+           Covariances
+              SATWLIFE      CESDCOM       FGCS          INTELLI       AGE
+              ________      ________      ________      ________      ________
+ SATWLIFE       0.533
+ CESDCOM        0.165         0.191
+ FGCS          -0.017         0.002         0.222
+ INTELLI        0.073         0.054        -0.057         1.016
+ AGE           -0.063         0.008         0.023        -0.025         2.638
+ SEX           -0.017        -0.026        -0.003        -0.046        -0.080
+ BLACK         -0.017        -0.003        -0.031         0.046         0.024
+ HISPANIC       0.001        -0.008         0.018        -0.017         0.023
+ WORKFUL        0.014         0.001        -0.017        -0.008        -0.149
+ BMI           -0.005        -0.028         0.109         0.232         1.283
+ MOBILITY       0.023         0.021        -0.003         0.016         0.006
+
+
+           Covariances
+              SEX           BLACK         HISPANIC      WORKFUL       BMI
+              ________      ________      ________      ________      ________
+ SEX            0.242
+ BLACK          0.013         0.173
+ HISPANIC      -0.006        -0.014         0.089
+ WORKFUL        0.025         0.003        -0.006         0.244
+ BMI           -0.269         0.419         0.003        -0.388        67.124
+ MOBILITY      -0.012        -0.003         0.002        -0.005        -0.262
+
+
+           Covariances
+              MOBILITY
+              ________
+ MOBILITY       0.079
+
+
+           Correlations
+              HFRIENDS      WALK4EX       WALK2SCH      EXFITCTR      PSYCH
+              ________      ________      ________      ________      ________
+ HFRIENDS       1.000
+ WALK4EX        0.038         1.000
+ WALK2SCH       0.170         0.066         1.000
+ EXFITCTR       0.084         0.139         0.055         1.000
+ PSYCH          0.028         0.051         0.085        -0.033         1.000
+ SATWLIFE       0.062         0.012         0.092         0.080        -0.198
+ CESDCOM        0.013        -0.006        -0.004         0.055        -0.248
+ FGCS          -0.064         0.063        -0.106         0.003        -0.092
+ INTELLI        0.040         0.027         0.112         0.041         0.023
+ AGE           -0.203         0.035        -0.216        -0.055        -0.039
+ SEX            0.010         0.129        -0.006        -0.171         0.134
+ BLACK          0.053        -0.012        -0.006        -0.049        -0.040
+ HISPANIC      -0.084         0.026        -0.118         0.025         0.017
+ WORKFUL        0.060        -0.018         0.155        -0.032         0.083
+ BMI            0.000         0.096        -0.056        -0.007         0.007
+ MOBILITY       0.034        -0.004         0.054         0.021        -0.059
+
+
+           Correlations
+              SATWLIFE      CESDCOM       FGCS          INTELLI       AGE
+              ________      ________      ________      ________      ________
+ SATWLIFE       1.000
+ CESDCOM        0.516         1.000
+ FGCS          -0.050         0.010         1.000
+ INTELLI        0.099         0.122        -0.120         1.000
+ AGE           -0.053         0.011         0.030        -0.015         1.000
+ SEX           -0.048        -0.122        -0.013        -0.093        -0.100
+ BLACK         -0.057        -0.019        -0.156         0.109         0.036
+ HISPANIC       0.005        -0.063         0.126        -0.056         0.048
+ WORKFUL        0.040         0.003        -0.073        -0.017        -0.185
+ BMI           -0.001        -0.008         0.028         0.028         0.096
+ MOBILITY       0.114         0.170        -0.021         0.057         0.014
+
+
+           Correlations
+              SEX           BLACK         HISPANIC      WORKFUL       BMI
+              ________      ________      ________      ________      ________
+ SEX            1.000
+ BLACK          0.063         1.000
+ HISPANIC      -0.037        -0.112         1.000
+ WORKFUL        0.104         0.013        -0.043         1.000
+ BMI           -0.067         0.123         0.001        -0.096         1.000
+ MOBILITY      -0.088        -0.026         0.029        -0.036        -0.114
+
+
+           Correlations
+              MOBILITY
+              ________
+ MOBILITY       1.000
+
+
+     MAXIMUM LOG-LIKELIHOOD VALUE FOR THE UNRESTRICTED (H1) MODEL IS -24842.981
+
+
+UNIVARIATE SAMPLE STATISTICS
+
+
+     UNIVARIATE HIGHER-ORDER MOMENT DESCRIPTIVE STATISTICS
+
+         Variable/         Mean/     Skewness/   Minimum/ % with                Percentiles
+        Sample Size      Variance    Kurtosis    Maximum  Min/Max      20%/60%    40%/80%    Median
+
+     HFRIENDS              4.896      -0.616       0.000    4.86%       3.000      4.000      5.000
+            1359.000       4.994      -0.878       7.000   43.41%       7.000      7.000
+     WALK4EX               1.510       1.348       0.000   53.31%       0.000      0.000      0.000
+            1360.000       4.437       0.761       7.000    6.40%       1.000      3.000
+     WALK2SCH              0.243       1.196       0.000   75.66%       0.000      0.000      0.000
+            1245.000       0.184      -0.569       1.000   24.34%       0.000      1.000
+     EXFITCTR              1.433       1.521       0.000   56.75%       0.000      0.000      0.000
+            1362.000       4.160       2.639      14.000    0.15%       1.000      3.000
+     PSYCH                 0.090       2.857       0.000   90.96%       0.000      0.000      0.000
+            1361.000       0.082       6.164       1.000    9.04%       0.000      0.000
+     SATWLIFE              4.286      -0.943       1.000    0.22%       4.000      4.000      4.000
+            1362.000       0.533       1.090       5.000   42.44%       5.000      5.000
+     CESDCOM               2.574      -1.728       0.143    0.07%       2.286      2.571      2.714
+            1361.000       0.191       3.728       3.000   19.10%       2.714      2.857
+     FGCS                  0.332       0.714       0.000   66.81%       0.000      0.000      0.000
+            1362.000       0.222      -1.490       1.000   33.19%       0.000      1.000
+     INTELLI               4.193      -0.234       1.000    0.44%       3.000      4.000      4.000
+            1362.000       1.016      -0.580       6.000    7.12%       5.000      5.000
+     AGE                  20.974       0.586      18.000    1.32%      19.000     20.000     21.000
+            1362.000       2.638      -0.240      27.000    0.15%      21.000     22.000
+     SEX                   1.589      -0.361       1.000   41.12%       1.000      1.000      2.000
+            1362.000       0.242      -1.870       2.000   58.88%       2.000      2.000
+     BLACK                 0.222       1.335       0.000   77.75%       0.000      0.000      0.000
+            1362.000       0.173      -0.219       1.000   22.25%       0.000      1.000
+     HISPANIC              0.099       2.683       0.000   90.09%       0.000      0.000      0.000
+            1362.000       0.089       5.199       1.000    9.91%       0.000      0.000
+     WORKFUL               1.576      -0.306       1.000   42.44%       1.000      1.000      2.000
+            1362.000       0.244      -1.906       2.000   57.56%       2.000      2.000
+     BMI                  26.137       6.251      14.828    0.07%      21.123     23.257     24.430
+            1362.000      67.124      69.956     143.311    0.07%      25.604     30.105
+     MOBILITY              2.931      -4.346       1.000    0.73%       3.000      3.000      3.000
+            1362.000       0.079      19.936       3.000   93.83%       3.000      3.000
+
+
+THE MODEL ESTIMATION TERMINATED NORMALLY
+
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       94
+
+Loglikelihood
+
+          H0 Value                      -11587.063
+          H0 Scaling Correction Factor      1.1068
+            for MLR
+          H1 Value                      -11582.207
+          H1 Scaling Correction Factor      1.1054
+            for MLR
+
+Information Criteria
+
+          Akaike (AIC)                   23362.127
+          Bayesian (BIC)                 23852.498
+          Sample-Size Adjusted BIC       23553.898
+            (n* = (n + 2) / 24)
+
+Chi-Square Test of Model Fit
+
+          Value                              9.059*
+          Degrees of Freedom                     4
+          P-Value                           0.0596
+          Scaling Correction Factor         1.0722
+            for MLR
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.030
+          90 Percent C.I.                    0.000  0.057
+          Probability RMSEA <= .05           0.872
+
+CFI/TLI
+
+          CFI                                0.995
+          TLI                                0.888
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                           1032.575
+          Degrees of Freedom                    84
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.007
+
+
+
+MODEL RESULTS
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ CESDCOM  ON
+    HFRIENDS           0.001      0.005      0.248      0.804
+    PSYCH             -0.357      0.053     -6.727      0.000
+    EXFITCTR           0.006      0.006      1.002      0.316
+    WALK4EX            0.002      0.005      0.346      0.729
+    WALK2SCH          -0.020      0.026     -0.763      0.445
+    FGCS               0.006      0.025      0.255      0.799
+    INTELLI            0.050      0.012      4.242      0.000
+    AGE                0.001      0.008      0.154      0.878
+    SEX               -0.059      0.022     -2.679      0.007
+    BLACK             -0.042      0.029     -1.437      0.151
+    HISPANIC          -0.096      0.041     -2.346      0.019
+    WORKFUL            0.036      0.024      1.507      0.132
+    BMI                0.001      0.001      0.418      0.676
+    MOBILITY           0.229      0.062      3.683      0.000
+
+ SATWLIFE ON
+    HFRIENDS           0.012      0.008      1.394      0.163
+    PSYCH             -0.257      0.074     -3.454      0.001
+    EXFITCTR           0.015      0.008      1.844      0.065
+    WALK4EX            0.001      0.008      0.131      0.896
+    WALK2SCH           0.135      0.044      3.083      0.002
+    FGCS              -0.099      0.037     -2.651      0.008
+    INTELLI            0.025      0.017      1.485      0.138
+    AGE               -0.013      0.012     -1.089      0.276
+    SEX                0.057      0.035      1.636      0.102
+    BLACK             -0.112      0.045     -2.472      0.013
+    HISPANIC           0.133      0.059      2.267      0.023
+    WORKFUL            0.040      0.035      1.133      0.257
+    BMI                0.002      0.002      1.277      0.202
+    MOBILITY           0.052      0.065      0.805      0.421
+    CESDCOM            0.816      0.049     16.741      0.000
+
+ EXFITCTR ON
+    HFRIENDS           0.071      0.025      2.891      0.004
+    FGCS               0.001      0.120      0.006      0.996
+    INTELLI            0.054      0.059      0.923      0.356
+    AGE               -0.075      0.032     -2.332      0.020
+    SEX               -0.703      0.115     -6.129      0.000
+    BLACK             -0.189      0.133     -1.416      0.157
+    HISPANIC           0.162      0.184      0.880      0.379
+    WORKFUL           -0.120      0.112     -1.071      0.284
+    BMI               -0.003      0.006     -0.484      0.628
+    MOBILITY          -0.007      0.206     -0.035      0.972
+
+ WALK4EX  ON
+    HFRIENDS           0.049      0.026      1.869      0.062
+    FGCS               0.274      0.125      2.188      0.029
+    INTELLI            0.100      0.057      1.764      0.078
+    AGE                0.062      0.039      1.593      0.111
+    SEX                0.646      0.117      5.543      0.000
+    BLACK             -0.161      0.139     -1.159      0.246
+    HISPANIC           0.167      0.188      0.890      0.374
+    WORKFUL           -0.046      0.120     -0.380      0.704
+    BMI                0.027      0.008      3.215      0.001
+    MOBILITY           0.118      0.199      0.592      0.554
+
+ WALK2SCH ON
+    HFRIENDS           0.022      0.005      4.447      0.000
+    FGCS              -0.061      0.025     -2.497      0.013
+    INTELLI            0.039      0.011      3.440      0.001
+    AGE               -0.043      0.007     -6.136      0.000
+    SEX               -0.023      0.024     -0.945      0.345
+    BLACK             -0.033      0.030     -1.125      0.261
+    HISPANIC          -0.126      0.030     -4.238      0.000
+    WORKFUL            0.098      0.024      4.136      0.000
+    BMI               -0.001      0.001     -1.062      0.288
+    MOBILITY           0.071      0.038      1.889      0.059
+
+ PSYCH    ON
+    HFRIENDS           0.003      0.004      0.792      0.429
+    FGCS              -0.059      0.015     -3.904      0.000
+    INTELLI            0.010      0.008      1.292      0.196
+    AGE               -0.001      0.005     -0.263      0.793
+    SEX                0.076      0.015      5.106      0.000
+    BLACK             -0.048      0.018     -2.691      0.007
+    HISPANIC           0.034      0.027      1.235      0.217
+    WORKFUL            0.037      0.015      2.435      0.015
+    BMI                0.001      0.001      0.792      0.429
+    MOBILITY          -0.051      0.034     -1.487      0.137
+
+ HFRIENDS ON
+    FGCS              -0.186      0.129     -1.439      0.150
+    INTELLI            0.046      0.061      0.751      0.453
+    AGE               -0.275      0.039     -7.058      0.000
+    SEX               -0.048      0.121     -0.401      0.689
+    BLACK              0.236      0.145      1.631      0.103
+    HISPANIC          -0.480      0.215     -2.228      0.026
+    WORKFUL            0.096      0.124      0.774      0.439
+    BMI                0.005      0.007      0.800      0.424
+    MOBILITY           0.316      0.219      1.444      0.149
+
+ EXFITCTR WITH
+    WALK4EX            0.672      0.138      4.881      0.000
+    WALK2SCH           0.000      0.000    999.000    999.000
+
+ WALK4EX  WITH
+    WALK2SCH           0.066      0.025      2.613      0.009
+
+ Intercepts
+    HFRIENDS           9.383      1.179      7.960      0.000
+    WALK4EX           -2.516      1.121     -2.244      0.025
+    WALK2SCH           0.614      0.227      2.703      0.007
+    EXFITCTR           3.857      1.091      3.535      0.000
+    PSYCH              0.033      0.165      0.198      0.843
+    SATWLIFE           1.931      0.367      5.261      0.000
+    CESDCOM            1.729      0.263      6.569      0.000
+
+ Residual Variances
+    HFRIENDS           4.725      0.140     33.694      0.000
+    WALK4EX            4.259      0.199     21.449      0.000
+    WALK2SCH           0.165      0.006     29.883      0.000
+    EXFITCTR           3.980      0.238     16.738      0.000
+    PSYCH              0.079      0.006     13.325      0.000
+    SATWLIFE           0.374      0.015     24.127      0.000
+    CESDCOM            0.170      0.010     16.292      0.000
+
+
+STANDARDIZED MODEL RESULTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ CESDCOM  ON
+    HFRIENDS           0.007      0.028      0.247      0.805
+    PSYCH             -0.234      0.034     -6.867      0.000
+    EXFITCTR           0.028      0.028      0.999      0.318
+    WALK4EX            0.009      0.026      0.346      0.729
+    WALK2SCH          -0.020      0.026     -0.760      0.447
+    FGCS               0.007      0.027      0.255      0.799
+    INTELLI            0.115      0.027      4.310      0.000
+    AGE                0.004      0.028      0.154      0.878
+    SEX               -0.067      0.025     -2.725      0.006
+    BLACK             -0.040      0.028     -1.442      0.149
+    HISPANIC          -0.066      0.028     -2.346      0.019
+    WORKFUL            0.040      0.027      1.522      0.128
+    BMI                0.009      0.023      0.418      0.676
+    MOBILITY           0.147      0.040      3.694      0.000
+
+ SATWLIFE ON
+    HFRIENDS           0.035      0.025      1.396      0.163
+    PSYCH             -0.101      0.029     -3.460      0.001
+    EXFITCTR           0.042      0.023      1.864      0.062
+    WALK4EX            0.003      0.024      0.131      0.896
+    WALK2SCH           0.079      0.026      3.069      0.002
+    FGCS              -0.064      0.024     -2.670      0.008
+    INTELLI            0.034      0.023      1.485      0.138
+    AGE               -0.028      0.026     -1.088      0.277
+    SEX                0.038      0.023      1.640      0.101
+    BLACK             -0.064      0.026     -2.484      0.013
+    HISPANIC           0.054      0.024      2.266      0.023
+    WORKFUL            0.027      0.024      1.132      0.258
+    BMI                0.027      0.021      1.262      0.207
+    MOBILITY           0.020      0.025      0.804      0.421
+    CESDCOM            0.489      0.027     18.429      0.000
+
+ EXFITCTR ON
+    HFRIENDS           0.078      0.027      2.864      0.004
+    FGCS               0.000      0.028      0.006      0.996
+    INTELLI            0.027      0.029      0.926      0.354
+    AGE               -0.060      0.025     -2.356      0.018
+    SEX               -0.170      0.027     -6.279      0.000
+    BLACK             -0.038      0.027     -1.408      0.159
+    HISPANIC           0.024      0.027      0.878      0.380
+    WORKFUL           -0.029      0.027     -1.069      0.285
+    BMI               -0.012      0.024     -0.485      0.628
+    MOBILITY          -0.001      0.028     -0.035      0.972
+
+ WALK4EX  ON
+    HFRIENDS           0.052      0.028      1.878      0.060
+    FGCS               0.061      0.028      2.198      0.028
+    INTELLI            0.048      0.027      1.773      0.076
+    AGE                0.048      0.030      1.596      0.110
+    SEX                0.151      0.027      5.526      0.000
+    BLACK             -0.032      0.027     -1.158      0.247
+    HISPANIC           0.024      0.027      0.889      0.374
+    WORKFUL           -0.011      0.028     -0.380      0.704
+    BMI                0.103      0.034      3.024      0.002
+    MOBILITY           0.016      0.027      0.592      0.554
+
+ WALK2SCH ON
+    HFRIENDS           0.116      0.026      4.484      0.000
+    FGCS              -0.067      0.027     -2.500      0.012
+    INTELLI            0.092      0.027      3.448      0.001
+    AGE               -0.163      0.026     -6.218      0.000
+    SEX               -0.026      0.028     -0.945      0.344
+    BLACK             -0.032      0.029     -1.125      0.260
+    HISPANIC          -0.088      0.021     -4.238      0.000
+    WORKFUL            0.113      0.027      4.170      0.000
+    BMI               -0.023      0.022     -1.055      0.292
+    MOBILITY           0.047      0.025      1.879      0.060
+
+ PSYCH    ON
+    HFRIENDS           0.022      0.028      0.793      0.428
+    FGCS              -0.097      0.024     -4.039      0.000
+    INTELLI            0.035      0.027      1.296      0.195
+    AGE               -0.007      0.028     -0.263      0.793
+    SEX                0.131      0.024      5.428      0.000
+    BLACK             -0.069      0.025     -2.731      0.006
+    HISPANIC           0.035      0.028      1.237      0.216
+    WORKFUL            0.064      0.026      2.464      0.014
+    BMI                0.027      0.035      0.789      0.430
+    MOBILITY          -0.050      0.033     -1.487      0.137
+
+ HFRIENDS ON
+    FGCS              -0.039      0.027     -1.439      0.150
+    INTELLI            0.021      0.027      0.751      0.453
+    AGE               -0.200      0.028     -7.137      0.000
+    SEX               -0.011      0.027     -0.401      0.689
+    BLACK              0.044      0.027      1.631      0.103
+    HISPANIC          -0.064      0.029     -2.226      0.026
+    WORKFUL            0.021      0.027      0.774      0.439
+    BMI                0.020      0.025      0.798      0.425
+    MOBILITY           0.040      0.028      1.438      0.150
+
+ EXFITCTR WITH
+    WALK4EX            0.163      0.032      5.168      0.000
+    WALK2SCH           0.000      0.000    999.000    999.000
+
+ WALK4EX  WITH
+    WALK2SCH           0.079      0.030      2.643      0.008
+
+ Intercepts
+    HFRIENDS           4.198      0.524      8.012      0.000
+    WALK4EX           -1.195      0.531     -2.252      0.024
+    WALK2SCH           1.430      0.527      2.714      0.007
+    EXFITCTR           1.891      0.527      3.590      0.000
+    PSYCH              0.114      0.575      0.198      0.843
+    SATWLIFE           2.643      0.521      5.071      0.000
+    CESDCOM            3.954      0.654      6.044      0.000
+
+ Residual Variances
+    HFRIENDS           0.946      0.013     74.861      0.000
+    WALK4EX            0.961      0.011     84.508      0.000
+    WALK2SCH           0.896      0.014     61.937      0.000
+    EXFITCTR           0.957      0.012     82.860      0.000
+    PSYCH              0.960      0.010     92.947      0.000
+    SATWLIFE           0.700      0.025     27.967      0.000
+    CESDCOM            0.889      0.021     42.833      0.000
+
+
+STDY Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ CESDCOM  ON
+    HFRIENDS           0.007      0.028      0.247      0.805
+    PSYCH             -0.234      0.034     -6.867      0.000
+    EXFITCTR           0.028      0.028      0.999      0.318
+    WALK4EX            0.009      0.026      0.346      0.729
+    WALK2SCH          -0.020      0.026     -0.760      0.447
+    FGCS               0.015      0.057      0.255      0.799
+    INTELLI            0.114      0.026      4.320      0.000
+    AGE                0.003      0.017      0.154      0.878
+    SEX               -0.136      0.050     -2.725      0.006
+    BLACK             -0.096      0.066     -1.443      0.149
+    HISPANIC          -0.220      0.093     -2.355      0.019
+    WORKFUL            0.082      0.054      1.522      0.128
+    BMI                0.001      0.003      0.418      0.676
+    MOBILITY           0.523      0.138      3.794      0.000
+
+ SATWLIFE ON
+    HFRIENDS           0.035      0.025      1.396      0.163
+    PSYCH             -0.101      0.029     -3.460      0.001
+    EXFITCTR           0.042      0.023      1.864      0.062
+    WALK4EX            0.003      0.024      0.131      0.896
+    WALK2SCH           0.079      0.026      3.069      0.002
+    FGCS              -0.135      0.051     -2.671      0.008
+    INTELLI            0.034      0.023      1.486      0.137
+    AGE               -0.017      0.016     -1.088      0.277
+    SEX                0.078      0.047      1.640      0.101
+    BLACK             -0.153      0.062     -2.487      0.013
+    HISPANIC           0.182      0.080      2.274      0.023
+    WORKFUL            0.054      0.048      1.132      0.258
+    BMI                0.003      0.003      1.276      0.202
+    MOBILITY           0.072      0.089      0.805      0.421
+    CESDCOM            0.489      0.027     18.429      0.000
+
+ EXFITCTR ON
+    HFRIENDS           0.078      0.027      2.864      0.004
+    FGCS               0.000      0.059      0.006      0.996
+    INTELLI            0.026      0.029      0.926      0.354
+    AGE               -0.037      0.016     -2.358      0.018
+    SEX               -0.345      0.055     -6.282      0.000
+    BLACK             -0.093      0.066     -1.408      0.159
+    HISPANIC           0.079      0.090      0.879      0.379
+    WORKFUL           -0.059      0.055     -1.069      0.285
+    BMI               -0.001      0.003     -0.486      0.627
+    MOBILITY          -0.004      0.101     -0.035      0.972
+
+ WALK4EX  ON
+    HFRIENDS           0.052      0.028      1.878      0.060
+    FGCS               0.130      0.059      2.199      0.028
+    INTELLI            0.048      0.027      1.774      0.076
+    AGE                0.029      0.018      1.597      0.110
+    SEX                0.307      0.056      5.528      0.000
+    BLACK             -0.076      0.066     -1.158      0.247
+    HISPANIC           0.079      0.089      0.889      0.374
+    WORKFUL           -0.022      0.057     -0.380      0.704
+    BMI                0.013      0.004      3.221      0.001
+    MOBILITY           0.056      0.094      0.592      0.554
+
+ WALK2SCH ON
+    HFRIENDS           0.116      0.026      4.484      0.000
+    FGCS              -0.143      0.057     -2.501      0.012
+    INTELLI            0.091      0.026      3.454      0.001
+    AGE               -0.100      0.016     -6.254      0.000
+    SEX               -0.054      0.057     -0.945      0.344
+    BLACK             -0.077      0.069     -1.125      0.260
+    HISPANIC          -0.294      0.068     -4.288      0.000
+    WORKFUL            0.229      0.055      4.170      0.000
+    BMI               -0.003      0.003     -1.062      0.288
+    MOBILITY           0.166      0.088      1.893      0.058
+
+ PSYCH    ON
+    HFRIENDS           0.022      0.028      0.793      0.428
+    FGCS              -0.205      0.051     -4.042      0.000
+    INTELLI            0.035      0.027      1.297      0.195
+    AGE               -0.005      0.017     -0.263      0.793
+    SEX                0.267      0.049      5.430      0.000
+    BLACK             -0.166      0.061     -2.734      0.006
+    HISPANIC           0.118      0.095      1.238      0.216
+    WORKFUL            0.129      0.052      2.465      0.014
+    BMI                0.003      0.004      0.792      0.428
+    MOBILITY          -0.177      0.118     -1.494      0.135
+
+ HFRIENDS ON
+    FGCS              -0.083      0.058     -1.440      0.150
+    INTELLI            0.020      0.027      0.751      0.453
+    AGE               -0.123      0.017     -7.192      0.000
+    SEX               -0.022      0.054     -0.401      0.689
+    BLACK              0.106      0.065      1.631      0.103
+    HISPANIC          -0.215      0.096     -2.233      0.026
+    WORKFUL            0.043      0.055      0.774      0.439
+    BMI                0.002      0.003      0.801      0.423
+    MOBILITY           0.142      0.098      1.444      0.149
+
+ EXFITCTR WITH
+    WALK4EX            0.163      0.032      5.168      0.000
+    WALK2SCH           0.000      0.000    999.000    999.000
+
+ WALK4EX  WITH
+    WALK2SCH           0.079      0.030      2.643      0.008
+
+ Intercepts
+    HFRIENDS           4.198      0.524      8.012      0.000
+    WALK4EX           -1.195      0.531     -2.252      0.024
+    WALK2SCH           1.430      0.527      2.714      0.007
+    EXFITCTR           1.891      0.527      3.590      0.000
+    PSYCH              0.114      0.575      0.198      0.843
+    SATWLIFE           2.643      0.521      5.071      0.000
+    CESDCOM            3.954      0.654      6.044      0.000
+
+ Residual Variances
+    HFRIENDS           0.946      0.013     74.861      0.000
+    WALK4EX            0.961      0.011     84.508      0.000
+    WALK2SCH           0.896      0.014     61.937      0.000
+    EXFITCTR           0.957      0.012     82.860      0.000
+    PSYCH              0.960      0.010     92.947      0.000
+    SATWLIFE           0.700      0.025     27.967      0.000
+    CESDCOM            0.889      0.021     42.833      0.000
+
+
+STD Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+ CESDCOM  ON
+    HFRIENDS           0.001      0.005      0.248      0.804
+    PSYCH             -0.357      0.053     -6.727      0.000
+    EXFITCTR           0.006      0.006      1.002      0.316
+    WALK4EX            0.002      0.005      0.346      0.729
+    WALK2SCH          -0.020      0.026     -0.763      0.445
+    FGCS               0.006      0.025      0.255      0.799
+    INTELLI            0.050      0.012      4.242      0.000
+    AGE                0.001      0.008      0.154      0.878
+    SEX               -0.059      0.022     -2.679      0.007
+    BLACK             -0.042      0.029     -1.437      0.151
+    HISPANIC          -0.096      0.041     -2.346      0.019
+    WORKFUL            0.036      0.024      1.507      0.132
+    BMI                0.001      0.001      0.418      0.676
+    MOBILITY           0.229      0.062      3.683      0.000
+
+ SATWLIFE ON
+    HFRIENDS           0.012      0.008      1.394      0.163
+    PSYCH             -0.257      0.074     -3.454      0.001
+    EXFITCTR           0.015      0.008      1.844      0.065
+    WALK4EX            0.001      0.008      0.131      0.896
+    WALK2SCH           0.135      0.044      3.083      0.002
+    FGCS              -0.099      0.037     -2.651      0.008
+    INTELLI            0.025      0.017      1.485      0.138
+    AGE               -0.013      0.012     -1.089      0.276
+    SEX                0.057      0.035      1.636      0.102
+    BLACK             -0.112      0.045     -2.472      0.013
+    HISPANIC           0.133      0.059      2.267      0.023
+    WORKFUL            0.040      0.035      1.133      0.257
+    BMI                0.002      0.002      1.277      0.202
+    MOBILITY           0.052      0.065      0.805      0.421
+    CESDCOM            0.816      0.049     16.741      0.000
+
+ EXFITCTR ON
+    HFRIENDS           0.071      0.025      2.891      0.004
+    FGCS               0.001      0.120      0.006      0.996
+    INTELLI            0.054      0.059      0.923      0.356
+    AGE               -0.075      0.032     -2.332      0.020
+    SEX               -0.703      0.115     -6.129      0.000
+    BLACK             -0.189      0.133     -1.416      0.157
+    HISPANIC           0.162      0.184      0.880      0.379
+    WORKFUL           -0.120      0.112     -1.071      0.284
+    BMI               -0.003      0.006     -0.484      0.628
+    MOBILITY          -0.007      0.206     -0.035      0.972
+
+ WALK4EX  ON
+    HFRIENDS           0.049      0.026      1.869      0.062
+    FGCS               0.274      0.125      2.188      0.029
+    INTELLI            0.100      0.057      1.764      0.078
+    AGE                0.062      0.039      1.593      0.111
+    SEX                0.646      0.117      5.543      0.000
+    BLACK             -0.161      0.139     -1.159      0.246
+    HISPANIC           0.167      0.188      0.890      0.374
+    WORKFUL           -0.046      0.120     -0.380      0.704
+    BMI                0.027      0.008      3.215      0.001
+    MOBILITY           0.118      0.199      0.592      0.554
+
+ WALK2SCH ON
+    HFRIENDS           0.022      0.005      4.447      0.000
+    FGCS              -0.061      0.025     -2.497      0.013
+    INTELLI            0.039      0.011      3.440      0.001
+    AGE               -0.043      0.007     -6.136      0.000
+    SEX               -0.023      0.024     -0.945      0.345
+    BLACK             -0.033      0.030     -1.125      0.261
+    HISPANIC          -0.126      0.030     -4.238      0.000
+    WORKFUL            0.098      0.024      4.136      0.000
+    BMI               -0.001      0.001     -1.062      0.288
+    MOBILITY           0.071      0.038      1.889      0.059
+
+ PSYCH    ON
+    HFRIENDS           0.003      0.004      0.792      0.429
+    FGCS              -0.059      0.015     -3.904      0.000
+    INTELLI            0.010      0.008      1.292      0.196
+    AGE               -0.001      0.005     -0.263      0.793
+    SEX                0.076      0.015      5.106      0.000
+    BLACK             -0.048      0.018     -2.691      0.007
+    HISPANIC           0.034      0.027      1.235      0.217
+    WORKFUL            0.037      0.015      2.435      0.015
+    BMI                0.001      0.001      0.792      0.429
+    MOBILITY          -0.051      0.034     -1.487      0.137
+
+ HFRIENDS ON
+    FGCS              -0.186      0.129     -1.439      0.150
+    INTELLI            0.046      0.061      0.751      0.453
+    AGE               -0.275      0.039     -7.058      0.000
+    SEX               -0.048      0.121     -0.401      0.689
+    BLACK              0.236      0.145      1.631      0.103
+    HISPANIC          -0.480      0.215     -2.228      0.026
+    WORKFUL            0.096      0.124      0.774      0.439
+    BMI                0.005      0.007      0.800      0.424
+    MOBILITY           0.316      0.219      1.444      0.149
+
+ EXFITCTR WITH
+    WALK4EX            0.672      0.138      4.881      0.000
+    WALK2SCH           0.000      0.000    999.000    999.000
+
+ WALK4EX  WITH
+    WALK2SCH           0.066      0.025      2.613      0.009
+
+ Intercepts
+    HFRIENDS           9.383      1.179      7.960      0.000
+    WALK4EX           -2.516      1.121     -2.244      0.025
+    WALK2SCH           0.614      0.227      2.703      0.007
+    EXFITCTR           3.857      1.091      3.535      0.000
+    PSYCH              0.033      0.165      0.198      0.843
+    SATWLIFE           1.931      0.367      5.261      0.000
+    CESDCOM            1.729      0.263      6.569      0.000
+
+ Residual Variances
+    HFRIENDS           4.725      0.140     33.694      0.000
+    WALK4EX            4.259      0.199     21.449      0.000
+    WALK2SCH           0.165      0.006     29.883      0.000
+    EXFITCTR           3.980      0.238     16.738      0.000
+    PSYCH              0.079      0.006     13.325      0.000
+    SATWLIFE           0.374      0.015     24.127      0.000
+    CESDCOM            0.170      0.010     16.292      0.000
+
+
+R-SQUARE
+
+    Observed                                        Two-Tailed
+    Variable        Estimate       S.E.  Est./S.E.    P-Value
+
+    HFRIENDS           0.054      0.013      4.290      0.000
+    WALK4EX            0.039      0.011      3.471      0.001
+    WALK2SCH           0.104      0.014      7.220      0.000
+    EXFITCTR           0.043      0.012      3.755      0.000
+    PSYCH              0.040      0.010      3.863      0.000
+    SATWLIFE           0.300      0.025     11.978      0.000
+    CESDCOM            0.111      0.021      5.361      0.000
+
+
+QUALITY OF NUMERICAL RESULTS
+
+     Condition Number for the Information Matrix              0.592E-07
+       (ratio of smallest to largest eigenvalue)
+
+
+TOTAL, TOTAL INDIRECT, SPECIFIC INDIRECT, AND DIRECT EFFECTS
+
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Effects from FGCS to SATWLIFE
+
+  Total               -0.070      0.042     -1.662      0.097
+  Total indirect       0.028      0.023      1.196      0.232
+
+  Specific indirect
+
+    SATWLIFE
+    HFRIENDS
+    FGCS              -0.002      0.002     -0.995      0.320
+
+    SATWLIFE
+    WALK4EX
+    FGCS               0.000      0.002      0.131      0.896
+
+    SATWLIFE
+    WALK2SCH
+    FGCS              -0.008      0.004     -1.968      0.049
+
+    SATWLIFE
+    EXFITCTR
+    FGCS               0.000      0.002      0.006      0.996
+
+    SATWLIFE
+    PSYCH
+    FGCS               0.015      0.006      2.489      0.013
+
+    SATWLIFE
+    CESDCOM
+    FGCS               0.005      0.020      0.255      0.799
+
+    SATWLIFE
+    WALK4EX
+    HFRIENDS
+    FGCS               0.000      0.000     -0.131      0.896
+
+    SATWLIFE
+    WALK2SCH
+    HFRIENDS
+    FGCS              -0.001      0.000     -1.241      0.214
+
+    SATWLIFE
+    EXFITCTR
+    HFRIENDS
+    FGCS               0.000      0.000     -1.021      0.307
+
+    SATWLIFE
+    PSYCH
+    HFRIENDS
+    FGCS               0.000      0.000      0.705      0.481
+
+    SATWLIFE
+    CESDCOM
+    HFRIENDS
+    FGCS               0.000      0.001     -0.245      0.807
+
+    SATWLIFE
+    CESDCOM
+    WALK4EX
+    FGCS               0.000      0.001      0.340      0.734
+
+    SATWLIFE
+    CESDCOM
+    WALK2SCH
+    FGCS               0.001      0.001      0.733      0.464
+
+    SATWLIFE
+    CESDCOM
+    EXFITCTR
+    FGCS               0.000      0.001      0.006      0.996
+
+    SATWLIFE
+    CESDCOM
+    PSYCH
+    FGCS               0.017      0.005      3.317      0.001
+
+    SATWLIFE
+    CESDCOM
+    WALK4EX
+    HFRIENDS
+    FGCS               0.000      0.000     -0.336      0.737
+
+    SATWLIFE
+    CESDCOM
+    WALK2SCH
+    HFRIENDS
+    FGCS               0.000      0.000      0.662      0.508
+
+    SATWLIFE
+    CESDCOM
+    EXFITCTR
+    HFRIENDS
+    FGCS               0.000      0.000     -0.788      0.431
+
+    SATWLIFE
+    CESDCOM
+    PSYCH
+    HFRIENDS
+    FGCS               0.000      0.000      0.712      0.476
+
+  Direct
+    SATWLIFE
+    FGCS              -0.099      0.037     -2.651      0.008
+
+
+Effects from FGCS to HFRIENDS
+
+  Total               -0.186      0.129     -1.439      0.150
+  Total indirect       0.000      0.000    999.000      0.000
+
+  Direct
+    HFRIENDS
+    FGCS              -0.186      0.129     -1.439      0.150
+
+
+Effects from FGCS to CESDCOM
+
+  Total                0.029      0.025      1.144      0.253
+  Total indirect       0.023      0.006      3.504      0.000
+
+  Specific indirect
+
+    CESDCOM
+    HFRIENDS
+    FGCS               0.000      0.001     -0.245      0.807
+
+    CESDCOM
+    WALK4EX
+    FGCS               0.001      0.002      0.340      0.734
+
+    CESDCOM
+    WALK2SCH
+    FGCS               0.001      0.002      0.733      0.464
+
+    CESDCOM
+    EXFITCTR
+    FGCS               0.000      0.001      0.006      0.996
+
+    CESDCOM
+    PSYCH
+    FGCS               0.021      0.006      3.427      0.001
+
+    CESDCOM
+    WALK4EX
+    HFRIENDS
+    FGCS               0.000      0.000     -0.335      0.737
+
+    CESDCOM
+    WALK2SCH
+    HFRIENDS
+    FGCS               0.000      0.000      0.662      0.508
+
+    CESDCOM
+    EXFITCTR
+    HFRIENDS
+    FGCS               0.000      0.000     -0.787      0.431
+
+    CESDCOM
+    PSYCH
+    HFRIENDS
+    FGCS               0.000      0.000      0.712      0.477
+
+  Direct
+    CESDCOM
+    FGCS               0.006      0.025      0.255      0.799
+
+
+
+STANDARDIZED TOTAL, TOTAL INDIRECT, SPECIFIC INDIRECT, AND DIRECT EFFECTS
+
+
+STDYX Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Effects from FGCS to SATWLIFE
+
+  Total               -0.045      0.027     -1.666      0.096
+  Total indirect       0.018      0.015      1.198      0.231
+
+  Specific indirect
+
+    SATWLIFE
+    HFRIENDS
+    FGCS              -0.001      0.001     -0.996      0.319
+
+    SATWLIFE
+    WALK4EX
+    FGCS               0.000      0.001      0.131      0.896
+
+    SATWLIFE
+    WALK2SCH
+    FGCS              -0.005      0.003     -1.965      0.049
+
+    SATWLIFE
+    EXFITCTR
+    FGCS               0.000      0.001      0.006      0.996
+
+    SATWLIFE
+    PSYCH
+    FGCS               0.010      0.004      2.510      0.012
+
+    SATWLIFE
+    CESDCOM
+    FGCS               0.003      0.013      0.255      0.799
+
+    SATWLIFE
+    WALK4EX
+    HFRIENDS
+    FGCS               0.000      0.000     -0.131      0.896
+
+    SATWLIFE
+    WALK2SCH
+    HFRIENDS
+    FGCS               0.000      0.000     -1.242      0.214
+
+    SATWLIFE
+    EXFITCTR
+    HFRIENDS
+    FGCS               0.000      0.000     -1.022      0.307
+
+    SATWLIFE
+    PSYCH
+    HFRIENDS
+    FGCS               0.000      0.000      0.704      0.481
+
+    SATWLIFE
+    CESDCOM
+    HFRIENDS
+    FGCS               0.000      0.001     -0.245      0.807
+
+    SATWLIFE
+    CESDCOM
+    WALK4EX
+    FGCS               0.000      0.001      0.340      0.734
+
+    SATWLIFE
+    CESDCOM
+    WALK2SCH
+    FGCS               0.001      0.001      0.732      0.464
+
+    SATWLIFE
+    CESDCOM
+    EXFITCTR
+    FGCS               0.000      0.000      0.006      0.996
+
+    SATWLIFE
+    CESDCOM
+    PSYCH
+    FGCS               0.011      0.003      3.376      0.001
+
+    SATWLIFE
+    CESDCOM
+    WALK4EX
+    HFRIENDS
+    FGCS               0.000      0.000     -0.336      0.737
+
+    SATWLIFE
+    CESDCOM
+    WALK2SCH
+    HFRIENDS
+    FGCS               0.000      0.000      0.661      0.509
+
+    SATWLIFE
+    CESDCOM
+    EXFITCTR
+    HFRIENDS
+    FGCS               0.000      0.000     -0.787      0.431
+
+    SATWLIFE
+    CESDCOM
+    PSYCH
+    HFRIENDS
+    FGCS               0.000      0.000      0.711      0.477
+
+  Direct
+    SATWLIFE
+    FGCS              -0.064      0.024     -2.670      0.008
+
+
+Effects from FGCS to HFRIENDS
+
+  Total               -0.039      0.027     -1.439      0.150
+  Total indirect       0.000      0.000      0.000      1.000
+
+  Direct
+    HFRIENDS
+    FGCS              -0.039      0.027     -1.439      0.150
+
+
+Effects from FGCS to CESDCOM
+
+  Total                0.031      0.027      1.144      0.252
+  Total indirect       0.024      0.007      3.540      0.000
+
+  Specific indirect
+
+    CESDCOM
+    HFRIENDS
+    FGCS               0.000      0.001     -0.245      0.807
+
+    CESDCOM
+    WALK4EX
+    FGCS               0.001      0.002      0.339      0.734
+
+    CESDCOM
+    WALK2SCH
+    FGCS               0.001      0.002      0.730      0.465
+
+    CESDCOM
+    EXFITCTR
+    FGCS               0.000      0.001      0.006      0.996
+
+    CESDCOM
+    PSYCH
+    FGCS               0.023      0.006      3.490      0.000
+
+    CESDCOM
+    WALK4EX
+    HFRIENDS
+    FGCS               0.000      0.000     -0.335      0.737
+
+    CESDCOM
+    WALK2SCH
+    HFRIENDS
+    FGCS               0.000      0.000      0.660      0.509
+
+    CESDCOM
+    EXFITCTR
+    HFRIENDS
+    FGCS               0.000      0.000     -0.784      0.433
+
+    CESDCOM
+    PSYCH
+    HFRIENDS
+    FGCS               0.000      0.000      0.711      0.477
+
+  Direct
+    CESDCOM
+    FGCS               0.007      0.027      0.255      0.799
+
+
+
+STDY Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Effects from FGCS to SATWLIFE
+
+  Total               -0.096      0.058     -1.667      0.096
+  Total indirect       0.038      0.032      1.198      0.231
+
+  Specific indirect
+
+    SATWLIFE
+    HFRIENDS
+    FGCS              -0.003      0.003     -0.996      0.319
+
+    SATWLIFE
+    WALK4EX
+    FGCS               0.000      0.003      0.131      0.896
+
+    SATWLIFE
+    WALK2SCH
+    FGCS              -0.011      0.006     -1.966      0.049
+
+    SATWLIFE
+    EXFITCTR
+    FGCS               0.000      0.002      0.006      0.996
+
+    SATWLIFE
+    PSYCH
+    FGCS               0.021      0.008      2.511      0.012
+
+    SATWLIFE
+    CESDCOM
+    FGCS               0.007      0.028      0.255      0.799
+
+    SATWLIFE
+    WALK4EX
+    HFRIENDS
+    FGCS               0.000      0.000     -0.131      0.896
+
+    SATWLIFE
+    WALK2SCH
+    HFRIENDS
+    FGCS              -0.001      0.001     -1.242      0.214
+
+    SATWLIFE
+    EXFITCTR
+    HFRIENDS
+    FGCS               0.000      0.000     -1.022      0.307
+
+    SATWLIFE
+    PSYCH
+    HFRIENDS
+    FGCS               0.000      0.000      0.704      0.481
+
+    SATWLIFE
+    CESDCOM
+    HFRIENDS
+    FGCS               0.000      0.001     -0.245      0.807
+
+    SATWLIFE
+    CESDCOM
+    WALK4EX
+    FGCS               0.001      0.002      0.340      0.734
+
+    SATWLIFE
+    CESDCOM
+    WALK2SCH
+    FGCS               0.001      0.002      0.732      0.464
+
+    SATWLIFE
+    CESDCOM
+    EXFITCTR
+    FGCS               0.000      0.001      0.006      0.996
+
+    SATWLIFE
+    CESDCOM
+    PSYCH
+    FGCS               0.023      0.007      3.377      0.001
+
+    SATWLIFE
+    CESDCOM
+    WALK4EX
+    HFRIENDS
+    FGCS               0.000      0.000     -0.336      0.737
+
+    SATWLIFE
+    CESDCOM
+    WALK2SCH
+    HFRIENDS
+    FGCS               0.000      0.000      0.661      0.509
+
+    SATWLIFE
+    CESDCOM
+    EXFITCTR
+    HFRIENDS
+    FGCS               0.000      0.000     -0.787      0.431
+
+    SATWLIFE
+    CESDCOM
+    PSYCH
+    HFRIENDS
+    FGCS               0.000      0.000      0.711      0.477
+
+  Direct
+    SATWLIFE
+    FGCS              -0.135      0.051     -2.671      0.008
+
+
+Effects from FGCS to HFRIENDS
+
+  Total               -0.083      0.058     -1.440      0.150
+  Total indirect       0.000      0.000      0.000      1.000
+
+  Direct
+    HFRIENDS
+    FGCS              -0.083      0.058     -1.440      0.150
+
+
+Effects from FGCS to CESDCOM
+
+  Total                0.066      0.058      1.144      0.252
+  Total indirect       0.052      0.015      3.542      0.000
+
+  Specific indirect
+
+    CESDCOM
+    HFRIENDS
+    FGCS              -0.001      0.002     -0.245      0.807
+
+    CESDCOM
+    WALK4EX
+    FGCS               0.001      0.003      0.339      0.734
+
+    CESDCOM
+    WALK2SCH
+    FGCS               0.003      0.004      0.730      0.465
+
+    CESDCOM
+    EXFITCTR
+    FGCS               0.000      0.002      0.006      0.996
+
+    CESDCOM
+    PSYCH
+    FGCS               0.048      0.014      3.492      0.000
+
+    CESDCOM
+    WALK4EX
+    HFRIENDS
+    FGCS               0.000      0.000     -0.335      0.737
+
+    CESDCOM
+    WALK2SCH
+    HFRIENDS
+    FGCS               0.000      0.000      0.660      0.509
+
+    CESDCOM
+    EXFITCTR
+    HFRIENDS
+    FGCS               0.000      0.000     -0.784      0.433
+
+    CESDCOM
+    PSYCH
+    HFRIENDS
+    FGCS               0.000      0.001      0.711      0.477
+
+  Direct
+    CESDCOM
+    FGCS               0.015      0.057      0.255      0.799
+
+
+
+STD Standardization
+
+                                                    Two-Tailed
+                    Estimate       S.E.  Est./S.E.    P-Value
+
+Effects from FGCS to SATWLIFE
+
+  Total               -0.070      0.042     -1.662      0.097
+  Total indirect       0.028      0.023      1.196      0.232
+
+  Specific indirect
+
+    SATWLIFE
+    HFRIENDS
+    FGCS              -0.002      0.002     -0.995      0.320
+
+    SATWLIFE
+    WALK4EX
+    FGCS               0.000      0.002      0.131      0.896
+
+    SATWLIFE
+    WALK2SCH
+    FGCS              -0.008      0.004     -1.968      0.049
+
+    SATWLIFE
+    EXFITCTR
+    FGCS               0.000      0.002      0.006      0.996
+
+    SATWLIFE
+    PSYCH
+    FGCS               0.015      0.006      2.489      0.013
+
+    SATWLIFE
+    CESDCOM
+    FGCS               0.005      0.020      0.255      0.799
+
+    SATWLIFE
+    WALK4EX
+    HFRIENDS
+    FGCS               0.000      0.000     -0.131      0.896
+
+    SATWLIFE
+    WALK2SCH
+    HFRIENDS
+    FGCS              -0.001      0.000     -1.241      0.214
+
+    SATWLIFE
+    EXFITCTR
+    HFRIENDS
+    FGCS               0.000      0.000     -1.021      0.307
+
+    SATWLIFE
+    PSYCH
+    HFRIENDS
+    FGCS               0.000      0.000      0.705      0.481
+
+    SATWLIFE
+    CESDCOM
+    HFRIENDS
+    FGCS               0.000      0.001     -0.245      0.807
+
+    SATWLIFE
+    CESDCOM
+    WALK4EX
+    FGCS               0.000      0.001      0.340      0.734
+
+    SATWLIFE
+    CESDCOM
+    WALK2SCH
+    FGCS               0.001      0.001      0.733      0.464
+
+    SATWLIFE
+    CESDCOM
+    EXFITCTR
+    FGCS               0.000      0.001      0.006      0.996
+
+    SATWLIFE
+    CESDCOM
+    PSYCH
+    FGCS               0.017      0.005      3.317      0.001
+
+    SATWLIFE
+    CESDCOM
+    WALK4EX
+    HFRIENDS
+    FGCS               0.000      0.000     -0.336      0.737
+
+    SATWLIFE
+    CESDCOM
+    WALK2SCH
+    HFRIENDS
+    FGCS               0.000      0.000      0.662      0.508
+
+    SATWLIFE
+    CESDCOM
+    EXFITCTR
+    HFRIENDS
+    FGCS               0.000      0.000     -0.788      0.431
+
+    SATWLIFE
+    CESDCOM
+    PSYCH
+    HFRIENDS
+    FGCS               0.000      0.000      0.712      0.476
+
+  Direct
+    SATWLIFE
+    FGCS              -0.099      0.037     -2.651      0.008
+
+
+Effects from FGCS to HFRIENDS
+
+  Total               -0.186      0.129     -1.439      0.150
+  Total indirect       0.000      0.000      0.000      1.000
+
+  Direct
+    HFRIENDS
+    FGCS              -0.186      0.129     -1.439      0.150
+
+
+Effects from FGCS to CESDCOM
+
+  Total                0.029      0.025      1.144      0.253
+  Total indirect       0.023      0.006      3.504      0.000
+
+  Specific indirect
+
+    CESDCOM
+    HFRIENDS
+    FGCS               0.000      0.001     -0.245      0.807
+
+    CESDCOM
+    WALK4EX
+    FGCS               0.001      0.002      0.340      0.734
+
+    CESDCOM
+    WALK2SCH
+    FGCS               0.001      0.002      0.733      0.464
+
+    CESDCOM
+    EXFITCTR
+    FGCS               0.000      0.001      0.006      0.996
+
+    CESDCOM
+    PSYCH
+    FGCS               0.021      0.006      3.427      0.001
+
+    CESDCOM
+    WALK4EX
+    HFRIENDS
+    FGCS               0.000      0.000     -0.335      0.737
+
+    CESDCOM
+    WALK2SCH
+    HFRIENDS
+    FGCS               0.000      0.000      0.662      0.508
+
+    CESDCOM
+    EXFITCTR
+    HFRIENDS
+    FGCS               0.000      0.000     -0.787      0.431
+
+    CESDCOM
+    PSYCH
+    HFRIENDS
+    FGCS               0.000      0.000      0.712      0.477
+
+  Direct
+    CESDCOM
+    FGCS               0.006      0.025      0.255      0.799
+
+
+
+
+MODEL MODIFICATION INDICES
+
+NOTE:  Modification indices for direct effects of observed dependent variables
+regressed on covariates may not be included.  To include these, request
+MODINDICES (ALL).
+
+Minimum M.I. value for printing the modification index    10.000
+
+                                   M.I.     E.P.C.  Std E.P.C.  StdYX E.P.C.
+
+No modification indices above the minimum value.
+
+
+
+PLOT INFORMATION
+
+The following plots are available:
+
+  Histograms (sample values, estimated values, residuals)
+  Scatterplots (sample values, estimated values, residuals)
+
+DIAGRAM INFORMATION
+
+  Use View Diagram under the Diagram menu in the Mplus Editor to view the diagram.
+  If running Mplus from the Mplus Diagrammer, the diagram opens automatically.
+
+  Diagram output
+    c:\users\jadam\box\papers-in-progress\z_inreview_firstgen-addhealth\fgcs-data-analysis\fgcs_final_model.dgm
+
+     Beginning Time:  17:14:44
+        Ending Time:  17:14:44
+       Elapsed Time:  00:00:00
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen
