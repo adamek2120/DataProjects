@@ -1,0 +1,537 @@
+Mplus VERSION 8
+MUTHEN & MUTHEN
+12/15/2020   6:44 PM
+
+INPUT INSTRUCTIONS
+
+  TITLE:
+  	EFA for Concussion Knowledge;
+
+  DATA:
+   	FILE IS outputData.csv;
+
+  VARIABLE:
+  !NOTE: LOOK FOR BAD CHARACTERS IN THE FIRST VARIABLE.
+  	NAMES ARE ID,ConKnw_1,ConKnw_2,ConKnw_3,ConKnw_4,ConKnw_5,ConKnw_6,ConKnw_7,ConKnw_8,
+  ConKnw_9,ConKnw10;
+
+  	MISSING ARE ALL (-999);
+
+  	!INCLUDE USED VARIABLES HERE
+  USEVAR ARE
+        ConKnw_1
+        ConKnw_2
+        ConKnw_3
+        ConKnw_4
+        ConKnw_5
+        ConKnw_6
+        ConKnw_7
+        ConKnw_8
+        ConKnw_9
+        ConKnw10;
+
+    CATEGORICAL ARE
+        ConKnw_1
+        ConKnw_2
+        ConKnw_3
+        ConKnw_4
+        ConKnw_5
+        ConKnw_6
+        ConKnw_7
+        ConKnw_8
+        ConKnw_9
+        ConKnw10;
+
+  ANALYSIS:
+  	TYPE IS EFA 1 3;
+
+  OUTPUT:
+         TECH1;
+
+
+
+INPUT READING TERMINATED NORMALLY
+
+
+
+
+EFA for Concussion Knowledge;
+
+SUMMARY OF ANALYSIS
+
+Number of groups                                                 1
+Number of observations                                         977
+
+Number of dependent variables                                   10
+Number of independent variables                                  0
+Number of continuous latent variables                            0
+
+Observed dependent variables
+
+  Binary and ordered categorical (ordinal)
+   CONKNW_1    CONKNW_2    CONKNW_3    CONKNW_4    CONKNW_5    CONKNW_6
+   CONKNW_7    CONKNW_8    CONKNW_9    CONKNW10
+
+
+Estimator                                                    WLSMV
+Rotation                                                    GEOMIN
+Row standardization                                    CORRELATION
+Type of rotation                                           OBLIQUE
+Epsilon value                                               Varies
+Maximum number of iterations                                  1000
+Convergence criterion                                    0.500D-04
+Maximum number of steepest descent iterations                   20
+Maximum number of iterations for H1                           2000
+Convergence criterion for H1                             0.100D-03
+Optimization Specifications for the Exploratory Factor Analysis
+Rotation Algorithm
+  Number of random starts                                       30
+  Maximum number of iterations                               10000
+  Derivative convergence criterion                       0.100D-04
+Link                                                        PROBIT
+
+Input data file(s)
+  outputData.csv
+
+Input data format  FREE
+
+
+SUMMARY OF DATA
+
+     Number of missing data patterns             1
+
+
+COVARIANCE COVERAGE OF DATA
+
+Minimum covariance coverage value   0.100
+
+
+     PROPORTION OF DATA PRESENT
+
+
+           Covariance Coverage
+              CONKNW_1      CONKNW_2      CONKNW_3      CONKNW_4      CONKNW_5
+              ________      ________      ________      ________      ________
+ CONKNW_1       1.000
+ CONKNW_2       1.000         1.000
+ CONKNW_3       1.000         1.000         1.000
+ CONKNW_4       1.000         1.000         1.000         1.000
+ CONKNW_5       1.000         1.000         1.000         1.000         1.000
+ CONKNW_6       1.000         1.000         1.000         1.000         1.000
+ CONKNW_7       1.000         1.000         1.000         1.000         1.000
+ CONKNW_8       1.000         1.000         1.000         1.000         1.000
+ CONKNW_9       1.000         1.000         1.000         1.000         1.000
+ CONKNW10       1.000         1.000         1.000         1.000         1.000
+
+
+           Covariance Coverage
+              CONKNW_6      CONKNW_7      CONKNW_8      CONKNW_9      CONKNW10
+              ________      ________      ________      ________      ________
+ CONKNW_6       1.000
+ CONKNW_7       1.000         1.000
+ CONKNW_8       1.000         1.000         1.000
+ CONKNW_9       1.000         1.000         1.000         1.000
+ CONKNW10       1.000         1.000         1.000         1.000         1.000
+
+
+UNIVARIATE PROPORTIONS AND COUNTS FOR CATEGORICAL VARIABLES
+
+    CONKNW_1
+      Category 1    0.096           94.000
+      Category 2    0.904          883.000
+    CONKNW_2
+      Category 1    0.202          197.000
+      Category 2    0.798          780.000
+    CONKNW_3
+      Category 1    0.076           74.000
+      Category 2    0.924          903.000
+    CONKNW_4
+      Category 1    0.138          135.000
+      Category 2    0.862          842.000
+    CONKNW_5
+      Category 1    0.706          690.000
+      Category 2    0.294          287.000
+    CONKNW_6
+      Category 1    0.780          762.000
+      Category 2    0.220          215.000
+    CONKNW_7
+      Category 1    0.485          474.000
+      Category 2    0.515          503.000
+    CONKNW_8
+      Category 1    0.866          846.000
+      Category 2    0.134          131.000
+    CONKNW_9
+      Category 1    0.793          775.000
+      Category 2    0.207          202.000
+    CONKNW10
+      Category 1    0.624          610.000
+      Category 2    0.376          367.000
+
+
+
+     NO CONVERGENCE.  NUMBER OF ITERATIONS EXCEEDED.
+     PROBLEM OCCURRED IN EXPLORATORY FACTOR ANALYSIS WITH 3 FACTOR(S).
+
+
+
+
+SUMMARY OF MODEL FIT INFORMATION
+
+
+                   Number of                   Degrees of
+     Model        Parameters      Chi-Square    Freedom     P-Value
+
+     1-factor          10            108.567        35       0.0000
+     2-factor          19             23.980        26       0.5771
+     3-factor         N/A
+
+                                               Degrees of
+     Models Compared              Chi-Square    Freedom     P-Value
+
+     1-factor against 2-factor        71.127         9       0.0000
+
+
+
+RESULTS FOR EXPLORATORY FACTOR ANALYSIS
+
+
+           EIGENVALUES FOR SAMPLE CORRELATION MATRIX
+                  1             2             3             4             5
+              ________      ________      ________      ________      ________
+                2.320         1.599         1.131         1.002         0.951
+
+
+           EIGENVALUES FOR SAMPLE CORRELATION MATRIX
+                  6             7             8             9            10
+              ________      ________      ________      ________      ________
+                0.757         0.713         0.588         0.537         0.403
+
+
+EXPLORATORY FACTOR ANALYSIS WITH 1 FACTOR(S):
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       10
+
+Chi-Square Test of Model Fit
+
+          Value                            108.567*
+          Degrees of Freedom                    35
+          P-Value                           0.0000
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.046
+          90 Percent C.I.                    0.037  0.056
+          Probability RMSEA <= .05           0.711
+
+CFI/TLI
+
+          CFI                                0.725
+          TLI                                0.647
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                            312.768
+          Degrees of Freedom                    45
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.085
+
+
+
+MINIMUM ROTATION FUNCTION VALUE       1.73126
+
+
+
+           GEOMIN ROTATED LOADINGS (* significant at 5% level)
+                  1
+              ________
+ CONKNW_1       0.699*
+ CONKNW_2       0.245*
+ CONKNW_3       0.713*
+ CONKNW_4       0.630*
+ CONKNW_5      -0.180*
+ CONKNW_6      -0.284*
+ CONKNW_7       0.371*
+ CONKNW_8      -0.069
+ CONKNW_9       0.079
+ CONKNW10       0.122
+
+
+           GEOMIN FACTOR CORRELATIONS (* significant at 5% level)
+                  1
+              ________
+      1         1.000
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              CONKNW_1      CONKNW_2      CONKNW_3      CONKNW_4      CONKNW_5
+              ________      ________      ________      ________      ________
+                0.512         0.940         0.491         0.603         0.968
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              CONKNW_6      CONKNW_7      CONKNW_8      CONKNW_9      CONKNW10
+              ________      ________      ________      ________      ________
+                0.920         0.863         0.995         0.994         0.985
+
+
+           S.E. GEOMIN ROTATED LOADINGS
+                  1
+              ________
+ CONKNW_1       0.067
+ CONKNW_2       0.068
+ CONKNW_3       0.075
+ CONKNW_4       0.064
+ CONKNW_5       0.065
+ CONKNW_6       0.069
+ CONKNW_7       0.060
+ CONKNW_8       0.075
+ CONKNW_9       0.068
+ CONKNW10       0.064
+
+
+           S.E. GEOMIN FACTOR CORRELATIONS
+                  1
+              ________
+      1         0.000
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              CONKNW_1      CONKNW_2      CONKNW_3      CONKNW_4      CONKNW_5
+              ________      ________      ________      ________      ________
+                0.094         0.033         0.107         0.080         0.023
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              CONKNW_6      CONKNW_7      CONKNW_8      CONKNW_9      CONKNW10
+              ________      ________      ________      ________      ________
+                0.039         0.044         0.010         0.011         0.016
+
+
+           Est./S.E. GEOMIN ROTATED LOADINGS
+                  1
+              ________
+ CONKNW_1      10.353
+ CONKNW_2       3.617
+ CONKNW_3       9.553
+ CONKNW_4       9.902
+ CONKNW_5      -2.764
+ CONKNW_6      -4.138
+ CONKNW_7       6.224
+ CONKNW_8      -0.917
+ CONKNW_9       1.156
+ CONKNW10       1.917
+
+
+           Est./S.E. GEOMIN FACTOR CORRELATIONS
+                  1
+              ________
+      1         0.000
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              CONKNW_1      CONKNW_2      CONKNW_3      CONKNW_4      CONKNW_5
+              ________      ________      ________      ________      ________
+                5.427        28.274         4.609         7.524        41.269
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              CONKNW_6      CONKNW_7      CONKNW_8      CONKNW_9      CONKNW10
+              ________      ________      ________      ________      ________
+               23.649        19.533        95.463        92.531        63.397
+
+
+EXPLORATORY FACTOR ANALYSIS WITH 2 FACTOR(S):
+
+
+MODEL FIT INFORMATION
+
+Number of Free Parameters                       19
+
+Chi-Square Test of Model Fit
+
+          Value                             23.980*
+          Degrees of Freedom                    26
+          P-Value                           0.5771
+
+*   The chi-square value for MLM, MLMV, MLR, ULSMV, WLSM and WLSMV cannot be used
+    for chi-square difference testing in the regular way.  MLM, MLR and WLSM
+    chi-square difference testing is described on the Mplus website.  MLMV, WLSMV,
+    and ULSMV difference testing is done using the DIFFTEST option.
+
+RMSEA (Root Mean Square Error Of Approximation)
+
+          Estimate                           0.000
+          90 Percent C.I.                    0.000  0.023
+          Probability RMSEA <= .05           1.000
+
+CFI/TLI
+
+          CFI                                1.000
+          TLI                                1.013
+
+Chi-Square Test of Model Fit for the Baseline Model
+
+          Value                            312.768
+          Degrees of Freedom                    45
+          P-Value                           0.0000
+
+SRMR (Standardized Root Mean Square Residual)
+
+          Value                              0.041
+
+
+
+MINIMUM ROTATION FUNCTION VALUE       0.39595
+
+
+
+           GEOMIN ROTATED LOADINGS (* significant at 5% level)
+                  1             2
+              ________      ________
+ CONKNW_1       0.718*        0.005
+ CONKNW_2       0.003         0.709*
+ CONKNW_3       0.744*       -0.018
+ CONKNW_4       0.602*        0.095
+ CONKNW_5      -0.384*        0.374*
+ CONKNW_6      -0.199*       -0.219*
+ CONKNW_7       0.244*        0.359*
+ CONKNW_8       0.011        -0.189*
+ CONKNW_9      -0.074         0.349*
+ CONKNW10       0.117         0.023
+
+
+           GEOMIN FACTOR CORRELATIONS (* significant at 5% level)
+                  1             2
+              ________      ________
+      1         1.000
+      2         0.149         1.000
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              CONKNW_1      CONKNW_2      CONKNW_3      CONKNW_4      CONKNW_5
+              ________      ________      ________      ________      ________
+                0.483         0.497         0.450         0.611         0.755
+
+
+           ESTIMATED RESIDUAL VARIANCES
+              CONKNW_6      CONKNW_7      CONKNW_8      CONKNW_9      CONKNW10
+              ________      ________      ________      ________      ________
+                0.899         0.785         0.965         0.880         0.985
+
+
+           S.E. GEOMIN ROTATED LOADINGS
+                  1             2
+              ________      ________
+ CONKNW_1       0.068         0.018
+ CONKNW_2       0.004         0.101
+ CONKNW_3       0.076         0.097
+ CONKNW_4       0.068         0.087
+ CONKNW_5       0.073         0.078
+ CONKNW_6       0.070         0.075
+ CONKNW_7       0.066         0.075
+ CONKNW_8       0.078         0.085
+ CONKNW_9       0.077         0.074
+ CONKNW10       0.065         0.069
+
+
+           S.E. GEOMIN FACTOR CORRELATIONS
+                  1             2
+              ________      ________
+      1         0.000
+      2         0.116         0.000
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              CONKNW_1      CONKNW_2      CONKNW_3      CONKNW_4      CONKNW_5
+              ________      ________      ________      ________      ________
+                0.097         0.143         0.110         0.079         0.067
+
+
+           S.E. ESTIMATED RESIDUAL VARIANCES
+              CONKNW_6      CONKNW_7      CONKNW_8      CONKNW_9      CONKNW10
+              ________      ________      ________      ________      ________
+                0.042         0.059         0.031         0.050         0.015
+
+
+           Est./S.E. GEOMIN ROTATED LOADINGS
+                  1             2
+              ________      ________
+ CONKNW_1      10.610         0.263
+ CONKNW_2       0.746         7.009
+ CONKNW_3       9.813        -0.184
+ CONKNW_4       8.868         1.098
+ CONKNW_5      -5.278         4.821
+ CONKNW_6      -2.833        -2.912
+ CONKNW_7       3.687         4.823
+ CONKNW_8       0.143        -2.217
+ CONKNW_9      -0.971         4.715
+ CONKNW10       1.803         0.334
+
+
+           Est./S.E. GEOMIN FACTOR CORRELATIONS
+                  1             2
+              ________      ________
+      1         0.000
+      2         1.289         0.000
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              CONKNW_1      CONKNW_2      CONKNW_3      CONKNW_4      CONKNW_5
+              ________      ________      ________      ________      ________
+                4.997         3.474         4.077         7.769        11.308
+
+
+           Est./S.E. ESTIMATED RESIDUAL VARIANCES
+              CONKNW_6      CONKNW_7      CONKNW_8      CONKNW_9      CONKNW10
+              ________      ________      ________      ________      ________
+               21.180        13.387        30.834        17.470        64.101
+
+
+           FACTOR STRUCTURE
+                  1             2
+              ________      ________
+ CONKNW_1       0.719         0.112
+ CONKNW_2       0.109         0.709
+ CONKNW_3       0.742         0.093
+ CONKNW_4       0.616         0.185
+ CONKNW_5      -0.328         0.317
+ CONKNW_6      -0.232        -0.249
+ CONKNW_7       0.298         0.396
+ CONKNW_8      -0.017        -0.187
+ CONKNW_9      -0.022         0.338
+ CONKNW10       0.120         0.040
+
+
+DIAGRAM INFORMATION
+
+  Mplus diagrams are currently not available for EFA.
+  No diagram output was produced.
+
+
+     Beginning Time:  18:44:58
+        Ending Time:  18:44:58
+       Elapsed Time:  00:00:00
+
+
+
+MUTHEN & MUTHEN
+3463 Stoner Ave.
+Los Angeles, CA  90066
+
+Tel: (310) 391-9971
+Fax: (310) 391-8971
+Web: www.StatModel.com
+Support: Support@StatModel.com
+
+Copyright (c) 1998-2017 Muthen & Muthen
